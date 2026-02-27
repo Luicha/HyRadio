@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebRadio (Catppuccin Mocha)</title>
+    <style>
+        /* Paleta Oficial Catppuccin Mocha */
+        :root {
+            --base: #1e1e2e;
+            --mantle: #181825;
+            --crust: #11111b;
+            --text: #cdd6f4;
+            --subtext0: #a6adc8;
+            --surface0: #313244;
+            --surface1: #45475a;
+            --surface2: #585b70;
+            --blue: #89b4fa;
+            --mauve: #cba6f7;
+            --green: #a6e3a1;
+            --red: #f38ba8;    
+            --yellow: #f9e2af; 
+        }
+
+        /* Reseteamos los márgenes del body para que la barra ocupe todo el ancho */
+        body {
+            background-color: var(--base);
+            color: var(--text);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* --- NUEVA BARRA SUPERIOR FIJA --- */
+        .top-bar {
+            position: sticky;
+            top: 0; 
+            background-color: var(--crust);
+            border-bottom: 2px solid var(--surface1);
+            padding: 15px 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .top-bar-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .status-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 0.95em;
+        }
+
+        .player-controls {
+            display: flex;
+            gap: 10px;
+        }
+        /* --------------------------------- */
+
+        /* Contenedor principal para el resto del contenido */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 { 
+            border-bottom: 2px dashed var(--mauve); 
+            padding-bottom: 10px; 
+            color: var(--mauve);
+            margin-top: 10px;
+        }
+
+        .station-list { 
+            list-style: none; 
+            padding: 0; 
+            border: 1px solid var(--surface1);
+            background-color: var(--mantle);
+            padding: 10px;
+            max-height: 400px; /* Aumenté un poco el alto para aprovechar la pantalla */
+            overflow-y: auto;
+            border-radius: 8px;
+        }
+
+        .station-item { 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 10px; 
+            transition: background-color 0.2s; 
+            border-radius: 4px;
+        }
+
+        .station-item:hover { background-color: var(--surface0); }
+        .station-text { cursor: pointer; flex-grow: 1; }
+        
+        .active-station { 
+            font-weight: bold; 
+            background-color: var(--blue); 
+            color: var(--crust); 
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--subtext0);
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            padding: 0 5px;
+            transition: color 0.2s;
+        }
+        .btn-edit:hover { color: var(--yellow); }
+        .btn-delete:hover { color: var(--red); }
+        .active-station .action-btn { color: var(--crust); opacity: 0.7; }
+        .active-station .action-btn:hover { opacity: 1; }
+
+        .console-box { 
+            margin-top: 20px; 
+            padding: 15px;
+            background-color: var(--mantle);
+            border: 1px solid var(--surface1);
+            border-radius: 8px;
+        }
+
+        button.main-btn {
+            background: var(--crust); 
+            color: var(--text); 
+            border: 1px solid var(--surface2);
+            padding: 8px 15px; 
+            cursor: pointer; 
+            font-family: inherit; 
+            margin-right: 5px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+        button.main-btn:hover { 
+            background: var(--blue); 
+            color: var(--crust); 
+            border-color: var(--blue);
+        }
+
+        input[type="text"] {
+            background: var(--base);
+            color: var(--text);
+            border: 1px solid var(--surface2);
+            padding: 8px;
+            font-family: inherit;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            width: calc(100% - 20px);
+            max-width: 300px;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border: 1px solid var(--blue);
+            box-shadow: 0 0 0 2px rgba(137, 180, 250, 0.2);
+        }
+
+        /* Media query para acomodar la barra en pantallas más anchas */
+        @media (min-width: 600px) {
+            .status-info {
+                flex-direction: row;
+                gap: 20px;
+            }
+            .separator { display: inline; color: var(--surface2); }
+        }
+        @media (max-width: 599px) {
+            .separator { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-bar">
+        <div class="top-bar-content">
+            <div class="status-info">
+                <span>> ESTADO: <span id="status" style="color: var(--subtext0);">Detenido</span></span>
+                <span class="separator">|</span>
+                <span>> STREAM: <span id="current-station" style="color: var(--blue); font-weight: bold;">Ninguno</span></span>
+            </div>
+            <div class="player-controls">
+                <audio id="audio-player"></audio>
+                <button class="main-btn" onclick="playRadio()">[ Play ]</button>
+                <button class="main-btn" onclick="stopRadio()">[ Stop ]</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>[ webradio@mocha:~ ]# ./play.sh</h1>
+        <p>Selecciona una emisora de la lista:</p>
+
+        <ul class="station-list" id="station-list">
+            </ul>
+
+        <div class="console-box">
+            <p>> ./add_stream.sh</p>
+            <input type="text" id="new-name" placeholder="Nombre (ej. Vorterix)">
+            <input type="text" id="new-url" placeholder="URL (ej. http://stream.com/live.mp3)">
+            <button class="main-btn" onclick="addNewStation()">[ Agregar ]</button>
+        </div>
+    </div>
+
+    <script>
+        const defaultStations = [
+            { name: "SomaFM - Groove Salad (Ambient)", url: "https://ice1.somafm.com/groovesalad-128-mp3" },
+            { name: "Radio Swiss Classic (Clásica)", url: "https://stream.srg-ssr.ch/m/rsc_de/mp3_128" },
+            { name: "Lofi Radio (Beats)", url: "https://play.streamafrica.net/lofi" },
+            { name: "BBC World Service (Noticias)", url: "http://stream.live.vc.bbcmedia.co.uk/bbc_world_service" }
+        ];
+
+        let stations = JSON.parse(localStorage.getItem('webradio_stations')) || defaultStations;
+
+        const listElement = document.getElementById('station-list');
+        const audioPlayer = document.getElementById('audio-player');
+        const statusText = document.getElementById('status');
+        const currentStationText = document.getElementById('current-station');
+
+        let currentIndex = -1;
+
+        function saveStations() {
+            localStorage.setItem('webradio_stations', JSON.stringify(stations));
+        }
+
+        function renderStations() {
+            listElement.innerHTML = ''; 
+            
+            stations.forEach((station, index) => {
+                let li = document.createElement('li');
+                li.className = 'station-item';
+                if (index === currentIndex) {
+                    li.classList.add('active-station');
+                }
+                
+                let textSpan = document.createElement('span');
+                textSpan.className = 'station-text';
+                textSpan.textContent = `${(index + 1).toString().padStart(2, '0')} - ${station.name}`;
+                textSpan.onclick = () => selectStation(index);
+
+                let actionDiv = document.createElement('div');
+                
+                let editBtn = document.createElement('button');
+                editBtn.className = 'action-btn btn-edit';
+                editBtn.textContent = '[E]';
+                editBtn.title = 'Editar';
+                editBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    editStation(index);
+                };
+
+                let deleteBtn = document.createElement('button');
+                deleteBtn.className = 'action-btn btn-delete';
+                deleteBtn.textContent = '[X]';
+                deleteBtn.title = 'Eliminar';
+                deleteBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    deleteStation(index);
+                };
+
+                actionDiv.appendChild(editBtn);
+                actionDiv.appendChild(deleteBtn);
+
+                li.appendChild(textSpan);
+                li.appendChild(actionDiv);
+                listElement.appendChild(li);
+            });
+        }
+
+        function selectStation(index) {
+            currentIndex = index;
+            const station = stations[index];
+            audioPlayer.src = station.url;
+            currentStationText.textContent = station.name;
+            renderStations(); 
+            playRadio(); 
+        }
+
+        function playRadio() {
+            if (currentIndex === -1) {
+                alert(">> EXCEPCIÓN: Ninguna emisora seleccionada.");
+                return;
+            }
+            audioPlayer.play();
+            statusText.textContent = "Conectando...";
+            statusText.style.color = "var(--blue)";
+            
+            audioPlayer.onplaying = () => {
+                statusText.textContent = "En Línea";
+                statusText.style.color = "var(--green)";
+            };
+        }
+
+        function stopRadio() {
+            audioPlayer.pause();
+            statusText.textContent = "Detenido";
+            statusText.style.color = "var(--subtext0)";
+        }
+
+        function addNewStation() {
+            const nameInput = document.getElementById('new-name');
+            const urlInput = document.getElementById('new-url');
+            const name = nameInput.value.trim();
+            const url = urlInput.value.trim();
+
+            if (name === "" || url === "") {
+                alert(">> EXCEPCIÓN: Debes ingresar un nombre y una URL válida.");
+                return;
+            }
+
+            stations.push({ name: name, url: url });
+            saveStations();
+            
+            nameInput.value = '';
+            urlInput.value = '';
+            renderStations();
+        }
+
+        function editStation(index) {
+            const station = stations[index];
+            const newName = prompt(">> EDITAR NOMBRE:", station.name);
+            if (newName === null) return; 
+            
+            const newUrl = prompt(">> EDITAR URL:", station.url);
+            if (newUrl === null) return;
+
+            if (newName.trim() !== "" && newUrl.trim() !== "") {
+                stations[index] = { name: newName.trim(), url: newUrl.trim() };
+                saveStations();
+                
+                if (currentIndex === index) {
+                    currentStationText.textContent = stations[index].name;
+                    if (audioPlayer.src !== stations[index].url) {
+                        audioPlayer.src = stations[index].url;
+                        playRadio();
+                    }
+                }
+                renderStations();
+            } else {
+                alert(">> EXCEPCIÓN: Los campos no pueden estar vacíos.");
+            }
+        }
+
+        function deleteStation(index) {
+            const station = stations[index];
+            if (confirm(`¿Estás seguro de que deseas eliminar [ ${station.name} ]?`)) {
+                stations.splice(index, 1);
+                
+                if (currentIndex === index) {
+                    stopRadio();
+                    currentIndex = -1;
+                    currentStationText.textContent = "Ninguno";
+                } else if (currentIndex > index) {
+                    currentIndex--;
+                }
+                
+                saveStations();
+                renderStations();
+            }
+        }
+
+        renderStations();
+    </script>
+</body>
+</html>
