@@ -1,2 +1,2 @@
 # HyRadio
-HTML radio streamer inspired on PyRadio
+HTML radio streamer inspired by PyRadio
