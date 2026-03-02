@@ -240,6 +240,39 @@ input[type="range"]::-moz-range-thumb { height: 16px; width: 8px; background: va
     min-width: 0;
 }
 
+.fav-btn {
+    cursor: pointer;
+    margin-right: 12px;
+    font-size: 1.2em;
+    color: var(--surface2); /* Color apagado por defecto */
+    transition: all 0.2s ease;
+    display: inline-block;
+    min-width: 20px;
+    text-align: center;
+}
+
+.fav-btn.active {
+    color: var(--red); /* Usamos el rojo de la paleta */
+    text-shadow: 0 0 8px var(--red);
+}
+
+.fav-btn:hover {
+    transform: scale(1.2);
+    color: var(--mauve);
+}
+
+.station-item {
+    display: flex;
+    align-items: center; /* Alinea el corazón con el texto */
+    padding: 5px 10px;
+}
+
+/* Para que la estación favorita resalte un poco en la lista */
+.station-item.is-favorite {
+    border-left: 2px solid var(--amber);
+    padding-left: 8px;
+}
+
 /* --- CONTENIDO PRINCIPAL --- */
 .container { max-width: 800px; margin: 0 auto; padding: 20px; }
 h1 { border-bottom: 2px dashed var(--mauve); padding-bottom: 10px; color: var(--mauve); margin-top: 10px; }

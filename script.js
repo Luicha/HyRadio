@@ -14,6 +14,17 @@ const defaultStations = [
     { name: "Ambient Sleeping Pill", url: "http://radio.stereoscenic.com/asp-s", api_url: "" },
     { name: "JazzGroove", url: "http://199.180.72.2:8015/listen.pls?sid=1", api_url: "" },
 
+    // Estaciones de la BBC (Bloque Completo)
+    { name: "BBC Radio 1", url: "http://stream.live.vc.bbc.co.uk/bbc_radio_one", api_url: "" },
+    { name: "BBC Radio 1Xtra", url: "http://stream.live.vc.bbc.co.uk/bbc_1xtra", api_url: "" },
+    { name: "BBC Radio 2", url: "http://lsn.lv/bbcradio.m3u8?station=bbc_radio_two&bitrate=96000", api_url: "" },
+    { name: "BBC Radio 3", url: "http://stream.live.vc.bbc.co.uk/bbc_radio_three", api_url: "" },
+    { name: "BBC Radio 4", url: "http://stream.live.vc.bbc.co.uk/bbc_radio_fourfm", api_url: "" },
+    { name: "BBC Radio 4 Extra", url: "http://stream.live.vc.bbc.co.uk/bbc_radio_four_extra", api_url: "" },
+    { name: "BBC Radio 5 Live", url: "http://stream.live.vc.bbc.co.uk/bbc_radio_five_live", api_url: "" },
+    { name: "BBC Radio 6 Music", url: "http://stream.live.vc.bbc.co.uk/bbc_6music", api_url: "" },
+    { name: "BBC World Service", url: "http://stream.live.vc.bbc.co.uk/bbc_world_service", api_url: "" },
+
     // --- RADIO PARADISE (Mixes) ---
     { name: "Radio Paradise - Main", url: "http://stream.radioparadise.com/aac-128", api_url: "" },
     { name: "Radio Paradise - Mellow", url: "http://stream.radioparadise.com/mellow-128", api_url: "" },
@@ -364,5 +375,68 @@ document.addEventListener('keydown', function(event) {
         }
     }
 });
+
+function renderStations() {
+    listElement.innerHTML = ''; 
+    
+    // Hacemos una copia para ordenar, pero le pegamos una etiqueta con su 'índice original' 
+    // a cada emisora para no perder el rastro de quién es quién en la base de datos.
+    const displayOrder = stations.map((station, index) => {
+        return { ...station, originalIndex: index };
+    }).sort((a, b) => (b.favorite === true) - (a.favorite === true));
+
+    displayOrder.forEach((station) => {
+        const index = station.originalIndex; // Recuperamos su número real
+        
+        let li = document.createElement('li');
+        li.className = 'station-item';
+        if (index === currentIndex) li.classList.add('active-station');
+        if (station.favorite) li.classList.add('is-favorite');
+        
+        // --- 1. Botón de Corazón ---
+        let favSpan = document.createElement('span');
+        favSpan.className = `fav-btn ${station.favorite ? 'active' : ''}`;
+        favSpan.textContent = station.favorite ? '♥' : '♡';
+        favSpan.onclick = (e) => toggleFavorite(index, e);
+
+        // --- 2. Texto de la estación ---
+        let textSpan = document.createElement('span');
+        textSpan.className = 'station-text';
+        textSpan.textContent = `${(index + 1).toString().padStart(2, '0')} - ${station.name}`;
+        textSpan.onclick = () => selectStation(index);
+
+        // --- 3. Botones de Acción [E] y [X] ---
+        let actionDiv = document.createElement('div');
+        
+        let editBtn = document.createElement('button');
+        editBtn.className = 'action-btn btn-edit';
+        editBtn.textContent = '[E]';
+        editBtn.onclick = (e) => { e.stopPropagation(); editStation(index); };
+
+        let deleteBtn = document.createElement('button');
+        deleteBtn.className = 'action-btn btn-delete';
+        deleteBtn.textContent = '[X]';
+        deleteBtn.onclick = (e) => { e.stopPropagation(); deleteStation(index); };
+
+        // Ensamblamos las piezas
+        actionDiv.appendChild(editBtn);
+        actionDiv.appendChild(deleteBtn);
+        li.appendChild(favSpan);
+        li.appendChild(textSpan);
+        li.appendChild(actionDiv);
+        
+        listElement.appendChild(li);
+    });
+}
+
+function toggleFavorite(index, event) {
+    event.stopPropagation(); // Frenamos el clic para que no active la radio por accidente
+    
+    // Si la estación no tenía la propiedad favorite, al negarla se vuelve 'true'
+    stations[index].favorite = !stations[index].favorite;
+    
+    saveStations();
+    renderStations(); // Redibujamos la pantalla para que la emisora salte arriba
+}
  
 renderStations();
