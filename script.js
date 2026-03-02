@@ -5,7 +5,6 @@ const defaultStations = [
     { name: "[550] - Radio Colonia", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/COLONIAAAC.aac", api_url: "" },
     { name: "[570] - Radio Argentina", url: "https://server.laradio.online:15224/live.mp3", api_url: "" },
     { name: "[590] - Radio Continental", url: "https://edge05.radiohdvivo.com/continental", api_url: "" },
-    { name: "BBC World Service", url: "http://stream.live.vc.bbcmedia.co.uk/bbc_world_service", api_url: "" },
     { name: "Public Radio (NPR)", url: "https://npr-ice.streamguys1.com/live.mp3", api_url: "" },
 
     // --- CONCENTRACIÓN Y ESTUDIO ---
@@ -15,15 +14,16 @@ const defaultStations = [
     { name: "JazzGroove", url: "http://199.180.72.2:8015/listen.pls?sid=1", api_url: "" },
 
     // Estaciones de la BBC (Bloque Completo)
-    { name: "BBC Radio 1", url: "http://stream.live.vc.bbc.co.uk/bbc_radio_one", api_url: "" },
-    { name: "BBC Radio 1Xtra", url: "http://stream.live.vc.bbc.co.uk/bbc_1xtra", api_url: "" },
+    { name: "BBC Radio 1", url: "http://lsn.lv/bbcradio.m3u8?station=bbc_radio_one&bitrate=96000", api_url: "" },
+    { name: "BBC Radio 1Xtra", url: "hhttp://lsn.lv/bbcradio.m3u8?station=bbc_1xtra&bitrate=96000", api_url: "" },
     { name: "BBC Radio 2", url: "http://lsn.lv/bbcradio.m3u8?station=bbc_radio_two&bitrate=96000", api_url: "" },
-    { name: "BBC Radio 3", url: "http://stream.live.vc.bbc.co.uk/bbc_radio_three", api_url: "" },
-    { name: "BBC Radio 4", url: "http://stream.live.vc.bbc.co.uk/bbc_radio_fourfm", api_url: "" },
-    { name: "BBC Radio 4 Extra", url: "http://stream.live.vc.bbc.co.uk/bbc_radio_four_extra", api_url: "" },
-    { name: "BBC Radio 5 Live", url: "http://stream.live.vc.bbc.co.uk/bbc_radio_five_live", api_url: "" },
-    { name: "BBC Radio 6 Music", url: "http://stream.live.vc.bbc.co.uk/bbc_6music", api_url: "" },
-    { name: "BBC World Service", url: "http://stream.live.vc.bbc.co.uk/bbc_world_service", api_url: "" },
+    { name: "BBC Radio 3", url: "http://lsn.lv/bbcradio.m3u8?station=bbc_radio_three&bitrate=96000", api_url: "" },
+    { name: "BBC Radio 4", url: "hhttp://lsn.lv/bbcradio.m3u8?station=bbc_radio_fourfm&bitrate=96000", api_url: "" },
+    { name: "BBC Radio 4 Extra", url: "http://lsn.lv/bbcradio.m3u8?station=bbc_radio_four_extra&bitrate=96000", api_url: "" },
+    { name: "BBC Radio 5 Live", url: "http://lsn.lv/bbcradio.m3u8?station=bbc_radio_five_live&bitrate=96000", api_url: "" },
+    { name: "BBC Radio 6 Music", url: "http://lsn.lv/bbcradio.m3u8?station=bbc_6music&bitrate=96000", api_url: "" },
+    { name: "BBC World Service", url: "http://stream.live.vc.bbcmedia.co.uk/bbc_world_service", api_url: "" },
+
 
     // --- RADIO PARADISE (Mixes) ---
     { name: "Radio Paradise - Main", url: "http://stream.radioparadise.com/aac-128", api_url: "" },
