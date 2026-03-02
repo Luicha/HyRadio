@@ -1,15 +1,93 @@
 const defaultStations = [
-    { name: "Aspen Radio", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/ASPEN.mp3" },
-    { name: "ESPN", url: "http://edge.espn.cdn.abacast.net/espn-deportesmp3-48" }, // Corregí un pequeño error de tipeo "hhttp" que tenías aquí
-    { name: "[530] - Radio Madre" , url: "http://cdn.instream.audio:9288/stream" },
-    { name: "[550] - Radio Colonia", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/COLONIAAAC.aac" },
-    { name: "[570] - Radio Argentina", url: "https://server.laradio.online:15224/live.mp3" },
-    { name: "[590] - Radio Continental", url: "https://edge05.radiohdvivo.com/continental" },
-    { name: "SomaFM - Groove Salad (Ambient)", url: "https://ice1.somafm.com/groovesalad-128-mp3" },
-    { name: "Radio Swiss Classic (Clásica)", url: "https://stream.srg-ssr.ch/m/rsc_de/mp3_128" },
-    { name: "Lofi Radio (Beats)", url: "https://play.streamafrica.net/lofi" },
-    { name: "BBC World Service (Noticias)", url: "http://stream.live.vc.bbcmedia.co.uk/bbc_world_service" }
+    // --- NACIONALES E INFORMATIVAS ---
+    { name: "Aspen Radio 102.3", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/ASPEN.mp3", api_url: "" },
+    { name: "[530] - Radio Madre", url: "http://cdn.instream.audio:9288/stream", api_url: "" },
+    { name: "[550] - Radio Colonia", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/COLONIAAAC.aac", api_url: "" },
+    { name: "[570] - Radio Argentina", url: "https://server.laradio.online:15224/live.mp3", api_url: "" },
+    { name: "[590] - Radio Continental", url: "https://edge05.radiohdvivo.com/continental", api_url: "" },
+    { name: "BBC World Service", url: "http://stream.live.vc.bbcmedia.co.uk/bbc_world_service", api_url: "" },
+    { name: "Public Radio (NPR)", url: "https://npr-ice.streamguys1.com/live.mp3", api_url: "" },
+
+    // --- CONCENTRACIÓN Y ESTUDIO ---
+    { name: "Radio Swiss Classic", url: "https://stream.srg-ssr.ch/m/rsc_de/mp3_128", api_url: "" },
+    { name: "Chillhop Radio (Lo-Fi)", url: "http://stream.zeno.fm/f3wvbbqmdg8uv", api_url: "" },
+    { name: "Ambient Sleeping Pill", url: "http://radio.stereoscenic.com/asp-s", api_url: "" },
+    { name: "JazzGroove", url: "http://199.180.72.2:8015/listen.pls?sid=1", api_url: "" },
+
+    // --- RADIO PARADISE (Mixes) ---
+    { name: "Radio Paradise - Main", url: "http://stream.radioparadise.com/aac-128", api_url: "" },
+    { name: "Radio Paradise - Mellow", url: "http://stream.radioparadise.com/mellow-128", api_url: "" },
+    { name: "Radio Paradise - Rock", url: "http://stream.radioparadise.com/rock-128", api_url: "" },
+    { name: "Radio Paradise - Eclectic", url: "http://stream.radioparadise.com/eclectic-128", api_url: "" },
+    
+    // --- SOMAFM  ---
+    { name: "SomaFM - Groove Salad", url: "https://ice1.somafm.com/groovesalad-128-mp3" },
+    { name: "SomaFM - SomaFM Live", url: "https://ice2.somafm.com/live-128-aac", api_url: "https://somafm.com/songs/live.json" },
+    { name: "SomaFM - Covers", url: "https://ice2.somafm.com/covers-128-aac", api_url: "https://somafm.com/songs/covers.json" },
+    { name: "SomaFM - Drone Zone", url: "https://ice2.somafm.com/dronezone-128-aac", api_url: "https://somafm.com/songs/dronezone.json" },
+    { name: "SomaFM - Deep Space One", url: "https://ice2.somafm.com/deepspaceone-128-aac", api_url: "https://somafm.com/songs/deepspaceone.json" },
+    { name: "SomaFM - Indie Pop Rocks!", url: "https://ice2.somafm.com/indiepop-128-aac", api_url: "https://somafm.com/songs/indiepop.json" },
+    { name: "SomaFM - Space Station Soma", url: "https://ice2.somafm.com/spacestation-128-aac", api_url: "https://somafm.com/songs/spacestation.json" },
+    { name: "SomaFM - Secret Agent", url: "https://ice2.somafm.com/secretagent-128-aac", api_url: "https://somafm.com/songs/secretagent.json" },
+    { name: "SomaFM - Lush", url: "https://ice2.somafm.com/lush-128-aac", api_url: "https://somafm.com/songs/lush.json" },
+    { name: "SomaFM - Underground 80s", url: "https://ice2.somafm.com/u80s-128-aac", api_url: "https://somafm.com/songs/u80s.json" },
+    { name: "SomaFM - Left Coast 70s", url: "https://ice2.somafm.com/seventies-128-aac", api_url: "https://somafm.com/songs/seventies.json" },
+    { name: "SomaFM - DEF CON Radio", url: "https://ice2.somafm.com/defcon-128-aac", api_url: "https://somafm.com/songs/defcon.json" },
+    { name: "SomaFM - Folk Forward", url: "https://ice2.somafm.com/folkfwd-128-aac", api_url: "https://somafm.com/songs/folkfwd.json" },
+    { name: "SomaFM - The Trip", url: "https://ice2.somafm.com/thetrip-128-aac", api_url: "https://somafm.com/songs/thetrip.json" },
+    { name: "SomaFM - Suburbs of Goa", url: "https://ice2.somafm.com/suburbsofgoa-128-aac", api_url: "https://somafm.com/songs/suburbsofgoa.json" },
+    { name: "SomaFM - Seven Inch Soul", url: "https://ice2.somafm.com/7soul-128-aac", api_url: "https://somafm.com/songs/7soul.json" },
+    { name: "SomaFM - Mission Control", url: "https://ice2.somafm.com/missioncontrol-128-aac", api_url: "https://somafm.com/songs/missioncontrol.json" },
+    { name: "SomaFM - cliqhop idm", url: "https://ice2.somafm.com/cliqhop-128-aac", api_url: "https://somafm.com/songs/cliqhop.json" },
+    { name: "SomaFM - Black Rock FM", url: "https://ice2.somafm.com/brfm-128-aac", api_url: "https://somafm.com/songs/brfm.json" },
+    { name: "SomaFM - Doomed (Special)", url: "https://ice2.somafm.com/specials-128-aac", api_url: "https://somafm.com/songs/specials.json" },
+    { name: "SomaFM - Metal Detector", url: "https://ice2.somafm.com/metal-128-aac", api_url: "https://somafm.com/songs/metal.json" }
 ];
+
+// --- MOTOR DE MARQUESINA DINÁMICA ---
+let displayTimer = null;
+
+async function updateMarquee() {
+    const station = stations[currentIndex];
+    if (!station) return;
+
+    // Si tiene API, buscamos la canción real
+    if (station.api_url) {
+        try {
+            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(station.api_url)}`;
+            const response = await fetch(proxyUrl);
+            const data = await response.json();
+            const realData = JSON.parse(data.contents);
+
+            if (realData.songs && realData.songs.length > 0) {
+                const song = realData.songs[0];
+                nowPlayingText.textContent = `♪ AHORA EN ${station.name.toUpperCase()}: ${song.artist} - ${song.title} ♪`;
+                return;
+            }
+        } catch (e) {
+            console.log("Error de API, usando frases...");
+        }
+    }
+
+    // Si no tiene API o falla, usamos frases random
+    const randomIndex = Math.floor(Math.random() * randomQuotes.length);
+    nowPlayingText.textContent = randomQuotes[randomIndex];
+}
+
+function playRadio() {
+    if (currentIndex === -1) return;
+    audioPlayer.play();
+    statusText.textContent = "Conectando...";
+    
+    audioPlayer.onplaying = () => {
+        statusText.textContent = "En Línea";
+        statusText.style.color = "var(--green)";
+        
+        updateMarquee();
+        if (displayTimer) clearInterval(displayTimer);
+        displayTimer = setInterval(updateMarquee, 20000); 
+    };
+}
 
 let stations = JSON.parse(localStorage.getItem('webradio_stations')) || defaultStations;
 

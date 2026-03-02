@@ -129,6 +129,8 @@ body {
     padding-bottom: 70px; 
 }
 
+
+
 /* --- BARRA SUPERIOR FIJA --- */
 .top-bar {
     position: sticky;
@@ -242,7 +244,7 @@ input[type="range"]::-moz-range-thumb { height: 16px; width: 8px; background: va
 .container { max-width: 800px; margin: 0 auto; padding: 20px; }
 h1 { border-bottom: 2px dashed var(--mauve); padding-bottom: 10px; color: var(--mauve); margin-top: 10px; }
 
-.station-list { list-style: none; padding: 0; border: 1px solid var(--surface1); background-color: var(--mantle); padding: 10px; max-height: 400px; overflow-y: auto; border-radius: 8px; }
+.station-list { list-style: none; padding: 0; border: 1px solid var(--surface1); background-color: var(--mantle); padding: 10px; max-height: 255px; overflow-y: auto; border-radius: 8px; scrollbar-width: none; -ms-overflow-style: none;}
 .station-item { display: flex; justify-content: space-between; align-items: center; padding: 5px 10px; transition: background-color 0.2s; border-radius: 4px; }
 .station-item:hover { background-color: var(--surface0); }
 .station-text { cursor: pointer; flex-grow: 1; }
