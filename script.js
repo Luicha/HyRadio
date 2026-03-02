@@ -1,10 +1,10 @@
 const defaultStations = [
     // --- NACIONALES E INFORMATIVAS ---
     { name: "Aspen Radio 102.3", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/ASPEN.mp3", api_url: "" },
-    { name: "[530] - Radio Madre", url: "http://cdn.instream.audio:9288/stream", api_url: "" },
-    { name: "[550] - Radio Colonia", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/COLONIAAAC.aac", api_url: "" },
-    { name: "[570] - Radio Argentina", url: "https://server.laradio.online:15224/live.mp3", api_url: "" },
-    { name: "[590] - Radio Continental", url: "https://edge05.radiohdvivo.com/continental", api_url: "" },
+    { name: "Radio Madre", url: "http://cdn.instream.audio:9288/stream", api_url: "" },
+    { name: "Radio Colonia", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/COLONIAAAC.aac", api_url: "" },
+    { name: "Radio Argentina", url: "https://server.laradio.online:15224/live.mp3", api_url: "" },
+    { name: "Radio Continental", url: "https://edge05.radiohdvivo.com/continental", api_url: "" },
     { name: "Public Radio (NPR)", url: "https://npr-ice.streamguys1.com/live.mp3", api_url: "" },
 
     // --- CONCENTRACIÓN Y ESTUDIO ---
