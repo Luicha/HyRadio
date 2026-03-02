@@ -1,0 +1,279 @@
+/* --- TEMAS (Variables CSS) --- */
+
+/* =========================================
+   1. FAMILIA CATPPUCCIN
+========================================= */
+:root[data-theme="mocha"] {
+    --base: #1e1e2e; --mantle: #181825; --crust: #11111b; --text: #cdd6f4;
+    --subtext0: #a6adc8; --surface0: #313244; --surface1: #45475a; --surface2: #585b70;
+    --blue: #89b4fa; --mauve: #cba6f7; --green: #a6e3a1; --red: #f38ba8; --yellow: #f9e2af; 
+}
+:root[data-theme="macchiato"] {
+    --base: #24273a; --mantle: #1e2030; --crust: #181825; --text: #cad3f5;
+    --subtext0: #a5adcb; --surface0: #363a4f; --surface1: #494d64; --surface2: #5b6078;
+    --blue: #8aadf4; --mauve: #c6a0f6; --green: #a6da95; --red: #ed8796; --yellow: #eed49f;
+}
+:root[data-theme="frappe"] {
+    --base: #303446; --mantle: #292c3c; --crust: #232634; --text: #c6d0f5;
+    --subtext0: #a5adce; --surface0: #414559; --surface1: #51576d; --surface2: #626880;
+    --blue: #8caaee; --mauve: #ca9ee6; --green: #a6d189; --red: #e78284; --yellow: #e5c890;
+}
+:root[data-theme="latte"] {
+    --base: #eff1f5; --mantle: #e6e9ef; --crust: #dce0e8; --text: #4c4f69;
+    --subtext0: #6c6f85; --surface0: #ccd0da; --surface1: #bcc0cc; --surface2: #acb0be;
+    --blue: #1e66f5; --mauve: #8839ef; --green: #40a02b; --red: #d20f39; --yellow: #df8e1d;
+}
+
+/* =========================================
+   2. TEMAS CLÁSICOS DE PROGRAMACIÓN
+========================================= */
+:root[data-theme="dracula"] {
+    --base: #282a36; --mantle: #21222c; --crust: #191a21; --text: #f8f8f2;
+    --subtext0: #6272a4; --surface0: #44475a; --surface1: #6272a4; --surface2: #bd93f9;
+    --blue: #8be9fd; --mauve: #ff79c6; --green: #50fa7b; --red: #ff5555; --yellow: #f1fa8c;
+}
+:root[data-theme="nord"] {
+    --base: #2e3440; --mantle: #242933; --crust: #1d222b; --text: #d8dee9;
+    --subtext0: #e5e9f0; --surface0: #3b4252; --surface1: #434c5e; --surface2: #4c566a;
+    --blue: #81a1c1; --mauve: #b48ead; --green: #a3be8c; --red: #bf616a; --yellow: #ebcb8b;
+}
+:root[data-theme="tokyonight"] {
+    --base: #1a1b26; --mantle: #16161e; --crust: #111117; --text: #a9b1d6;
+    --subtext0: #565f89; --surface0: #24283b; --surface1: #292e42; --surface2: #414868;
+    --blue: #7aa2f7; --mauve: #bb9af7; --green: #9ece6a; --red: #f7768e; --yellow: #e0af68;
+}
+:root[data-theme="onedark"] {
+    --base: #282c34; --mantle: #21252b; --crust: #181a1f; --text: #abb2bf;
+    --subtext0: #5c6370; --surface0: #2c313c; --surface1: #3e4451; --surface2: #545862;
+    --blue: #61afef; --mauve: #c678dd; --green: #98c379; --red: #e06c75; --yellow: #e5c07b;
+}
+:root[data-theme="monokai"] {
+    --base: #272822; --mantle: #1e1f1c; --crust: #171814; --text: #f8f8f2;
+    --subtext0: #75715e; --surface0: #3e3d32; --surface1: #49483e; --surface2: #75715e;
+    --blue: #66d9ef; --mauve: #ae81ff; --green: #a6e22e; --red: #f92672; --yellow: #e6db74;
+}
+
+/* =========================================
+   3. FAMILIA GRUVBOX (Cálidos / Vintage)
+========================================= */
+:root[data-theme="gruvbox-dark"] {
+    --base: #282828; --mantle: #1d2021; --crust: #1b1b1b; --text: #ebdbb2;
+    --subtext0: #a89984; --surface0: #3c3836; --surface1: #504945; --surface2: #665c54;
+    --blue: #83a598; --mauve: #d3869b; --green: #b8bb26; --red: #fb4934; --yellow: #fabd2f;
+}
+:root[data-theme="gruvbox-light"] {
+    --base: #fbf1c7; --mantle: #f2e5bc; --crust: #ebdbb2; --text: #3c3836;
+    --subtext0: #7c6f64; --surface0: #ebdbb2; --surface1: #d5c4a1; --surface2: #bdae93;
+    --blue: #076678; --mauve: #8f3f71; --green: #79740e; --red: #9d0006; --yellow: #b57614;
+}
+
+/* =========================================
+   4. FAMILIA SOLARIZED
+========================================= */
+:root[data-theme="solarized-dark"] {
+    --base: #002b36; --mantle: #00212b; --crust: #00151c; --text: #839496;
+    --subtext0: #586e75; --surface0: #073642; --surface1: #586e75; --surface2: #657b83;
+    --blue: #268bd2; --mauve: #6c71c4; --green: #859900; --red: #dc322f; --yellow: #b58900;
+}
+:root[data-theme="solarized-light"] {
+    --base: #fdf6e3; --mantle: #eee8d5; --crust: #e3dac9; --text: #657b83;
+    --subtext0: #93a1a1; --surface0: #eee8d5; --surface1: #ccc2b3; --surface2: #93a1a1;
+    --blue: #268bd2; --mauve: #6c71c4; --green: #859900; --red: #dc322f; --yellow: #b58900;
+}
+
+/* =========================================
+   5. NEÓN / CYBERPUNK
+========================================= */
+:root[data-theme="cyberpunk"] {
+    --base: #0f0f1c; --mantle: #0a0a14; --crust: #05050a; --text: #fcee0a;
+    --subtext0: #00ff9f; --surface0: #1f1f33; --surface1: #00ff9f; --surface2: #711c91;
+    --blue: #00ffff; --mauve: #ff003c; --green: #00ff9f; --red: #ff003c; --yellow: #fcee0a;
+}
+:root[data-theme="synthwave"] {
+    --base: #2b213a; --mantle: #241b30; --crust: #1d1526; --text: #f9f9f9;
+    --subtext0: #ff7edb; --surface0: #34294f; --surface1: #44356a; --surface2: #ff7edb;
+    --blue: #36f9f6; --mauve: #fe4450; --green: #72f1b8; --red: #fe4450; --yellow: #fede5d;
+}
+:root[data-theme="hacker"] {
+    --base: #000000; --mantle: #050505; --crust: #0a0a0a; --text: #00ff00;
+    --subtext0: #008800; --surface0: #111111; --surface1: #004400; --surface2: #00aa00;
+    --blue: #00ff00; --mauve: #00ff00; --green: #00ff00; --red: #ff0000; --yellow: #00ff00;
+}
+
+/* =========================================
+   6. TERMINALES CLÁSICAS (Retro CRT)
+========================================= */
+:root[data-theme="retro-green"] {
+    --base: #0d0d0d; --mantle: #0a0a0a; --crust: #000000; --text: #33ff33;
+    --subtext0: #1f991f; --surface0: #1a1a1a; --surface1: #222222; --surface2: #333333;
+    --blue: #33ff33; --mauve: #33ff33; --green: #33ff33; --red: #ff3333; --yellow: #ffff33;
+}
+:root[data-theme="retro-amber"] {
+    --base: #0d0d0d; --mantle: #0a0a0a; --crust: #000000; --text: #ffb000;
+    --subtext0: #cc8c00; --surface0: #1a1a1a; --surface1: #332300; --surface2: #4d3500;
+    --blue: #ffb000; --mauve: #ffb000; --green: #ffb000; --red: #ff5500; --yellow: #ffcc00;
+}
+:root[data-theme="retro-cyan"] {
+    --base: #000000; --mantle: #000505; --crust: #000a0a; --text: #00ffff;
+    --subtext0: #00cccc; --surface0: #001a1a; --surface1: #003333; --surface2: #004d4d;
+    --blue: #00ffff; --mauve: #00ffff; --green: #00ffff; --red: #00ffff; --yellow: #00ffff;
+}
+
+body {
+    background-color: var(--base);
+    color: var(--text);
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    padding-bottom: 70px; 
+}
+
+/* --- BARRA SUPERIOR FIJA --- */
+.top-bar {
+    position: sticky;
+    top: 0;
+    background-color: var(--crust);
+    border-bottom: 2px solid var(--surface1);
+    padding: 10px 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.top-bar-content {
+    max-width: 1200px; /* Aumentamos el límite de ancho */
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap; /* Salto de línea si no hay espacio*/
+    gap: 15px;
+    font-size: 0.9em;
+    white-space: nowrap; /* Evita que los textos internos se rompan */
+    overflow-x: auto; /* Permite deslizar hacia los lados en pantallas chicas */
+}
+
+/* Oculta la barra de scroll horizontal para que se vea más limpio */
+.top-bar-content::-webkit-scrollbar {
+    display: none;
+}
+
+.separator { 
+    color: var(--surface2); 
+    font-weight: bold;
+}
+
+.status-text {
+    color: var(--subtext0);
+}
+
+.stream-text {
+    color: var(--blue); 
+    font-weight: bold;
+}
+
+/* --- CONTROL DE VOLUMEN --- */
+.volume-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--mantle);
+    padding: 4px 10px;
+    border: 1px solid var(--surface2);
+    border-radius: 4px;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 80px;
+    background: transparent;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: var(--surface2); border-radius: 0; }
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 16px; width: 8px; background: var(--blue); margin-top: -6px; border-radius: 0; transition: background-color 0.2s;
+}
+input[type="range"]::-webkit-slider-thumb:hover { background: var(--mauve); }
+input[type="range"]::-moz-range-track { width: 100%; height: 4px; background: var(--surface2); border-radius: 0; }
+input[type="range"]::-moz-range-thumb { height: 16px; width: 8px; background: var(--blue); border: none; border-radius: 0; }
+
+.vol-text { color: var(--blue); font-weight: bold; min-width: 45px; text-align: right; }
+
+.bottom-bar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--crust);
+    border-top: 2px solid var(--surface1);
+    padding: 12px 0;
+    z-index: 1000;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.bottom-bar-content {
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.now-playing-label { 
+    color: var(--mauve); 
+    font-weight: bold; 
+    margin-right: 10px; 
+    flex-shrink: 0; 
+}
+
+.now-playing-text { 
+    color: var(--green); 
+    flex-grow: 1;
+    min-width: 0;
+}
+
+/* --- CONTENIDO PRINCIPAL --- */
+.container { max-width: 800px; margin: 0 auto; padding: 20px; }
+h1 { border-bottom: 2px dashed var(--mauve); padding-bottom: 10px; color: var(--mauve); margin-top: 10px; }
+
+.station-list { list-style: none; padding: 0; border: 1px solid var(--surface1); background-color: var(--mantle); padding: 10px; max-height: 400px; overflow-y: auto; border-radius: 8px; }
+.station-item { display: flex; justify-content: space-between; align-items: center; padding: 5px 10px; transition: background-color 0.2s; border-radius: 4px; }
+.station-item:hover { background-color: var(--surface0); }
+.station-text { cursor: pointer; flex-grow: 1; }
+.active-station { font-weight: bold; background-color: var(--blue); color: var(--crust); }
+
+.action-btn { background: none; border: none; color: var(--subtext0); cursor: pointer; font-family: inherit; font-weight: bold; padding: 0 5px; transition: color 0.2s; }
+.btn-edit:hover { color: var(--yellow); }
+.btn-delete:hover { color: var(--red); }
+.active-station .action-btn { color: var(--crust); opacity: 0.7; }
+.active-station .action-btn:hover { opacity: 1; }
+
+.console-box { margin-top: 20px; padding: 15px; background-color: var(--mantle); border: 1px solid var(--surface1); border-radius: 8px; }
+
+button.main-btn { background: var(--crust); color: var(--text); border: 1px solid var(--surface2); padding: 6px 12px; cursor: pointer; font-family: inherit; text-transform: uppercase; border-radius: 4px; transition: all 0.2s ease; font-weight: bold; }
+button.main-btn:hover { background: var(--blue); color: var(--crust); border-color: var(--blue); }
+
+input[type="text"] { background: var(--base); color: var(--text); border: 1px solid var(--surface2); padding: 8px; font-family: inherit; margin-right: 10px; margin-bottom: 10px; border-radius: 4px; transition: border-color 0.2s, box-shadow 0.2s; width: calc(100% - 20px); max-width: 300px; }
+input[type="text"]:focus { outline: none; border: 1px solid var(--blue); box-shadow: 0 0 0 2px rgba(137, 180, 250, 0.2); }
+
+@media (max-width: 768px) { .separator { display: none; } }
+
+select.theme-select {
+    background: var(--mantle);
+    color: var(--blue);
+    border: 1px solid var(--surface2);
+    padding: 2px 5px;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    outline: none;
+}
+select.theme-select:focus { border-color: var(--mauve); }
+select.theme-select option { background: var(--base); color: var(--text); }
