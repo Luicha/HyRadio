@@ -74,19 +74,19 @@
     </header>
     
     <div class="container">
-        <h1>[ webradio@mocha:~ ]# ./play.sh</h1>
+        <h1>[ Radio:~ ]# ./play.sh</h1>
         <p>Selecciona una emisora de la lista:</p>
 
         <ul class="station-list" id="station-list"></ul>
 
         <div class="console-box"> <!-- Agregar emisora -->
-            <p>> agregar estación./add_stream.sh</p>
+            <p>> Agregar estación... </p>
             <input type="text" id="new-name" placeholder="Nombre (ej. Vorterix)">
             <input type="text" id="new-url" placeholder="URL (ej. http://stream.com/live.mp3)">
             <button class="main-btn" onclick="addNewStation()">[ Agregar ]</button>
         </div>
         <div class="console-box"> <!-- Exportar e importar lista de radios -->
-            <p>> hacer copia de seguridad./backup_db.sh</p>
+            <p>> Importar / Exportar emisoras </p>
             <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importStations(event)">
             <button class="main-btn" onclick="exportStations()">[ Exportar emisoras ]</button>
             <button class="main-btn" onclick="document.getElementById('import-file').click()">[ Importar emisoras
