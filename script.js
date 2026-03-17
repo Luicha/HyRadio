@@ -5,6 +5,7 @@ const defaultStations = [
     { name: "Radio Colonia", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/COLONIAAAC.aac", api_url: "" },
     { name: "Radio Argentina", url: "https://server.laradio.online:15224/live.mp3", api_url: "" },
     { name: "Radio Continental", url: "https://edge05.radiohdvivo.com/continental", api_url: "" },
+    { name: "Infobae 97.1", url: " https://playerservices.streamtheworld.com/api/livestream-redirect/INFOBAE.mp3", api_url: "" },
     { name: "Public Radio (NPR)", url: "https://npr-ice.streamguys1.com/live.mp3", api_url: "" },
 
     // --- CONCENTRACIÓN Y ESTUDIO ---
