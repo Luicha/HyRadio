@@ -1,7 +1,6 @@
 # 📻 HyRadio
 
 Reproductor de radio por internet ligero y con estética de terminal clásica. Hecho con  HTML, CSS y JS. 
-Rápido y liviano.
 
 ## ✨ Características Principales
 
