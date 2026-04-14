@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HyRadio</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📻</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📻</text></svg>">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="HyRadio">
     <meta name="mobile-web-app-capable" content="yes">
-    
+
     <meta name="theme-color" content="#1e1e2e">
 </head>
 
@@ -72,18 +73,21 @@
             </div>
         </div>
     </header>
-    
+
     <div class="container">
         <h1>[ Radio:~ ]# ./play.sh</h1>
         <p>Selecciona una emisora de la lista:</p>
 
         <ul class="station-list" id="station-list"></ul>
-
+        <div class="console-box">
+            <p>> Explorar catálogo global</p>
+            <input type="text" id="search-input" placeholder="Buscar por nombre o país...">
+            <div id="search-results"></div>
+        </div>
         <div class="console-box"> <!-- Agregar emisora -->
             <p>> Agregar estación... </p>
             <input type="text" id="new-name" placeholder="Nombre (ej. Vorterix)">
             <input type="text" id="new-url" placeholder="URL (ej. http://stream.com/live.mp3)">
-            <button class="main-btn" onclick="addNewStation()">[ Agregar ]</button>
         </div>
         <div class="console-box"> <!-- Exportar e importar lista de radios -->
             <p>> Importar / Exportar emisoras </p>

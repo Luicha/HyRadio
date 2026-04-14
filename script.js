@@ -1,412 +1,95 @@
+// ==========================================
+// CONFIGURACIÓN INICIAL Y ESTADO GLOBAL
+// ==========================================
 const defaultStations = [
-    // --- NACIONALES E INFORMATIVAS ---
-    { name: "Aspen Radio 102.3", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/ASPEN.mp3", api_url: "" },
-    { name: "Radio Madre", url: "http://cdn.instream.audio:9288/stream", api_url: "" },
-    { name: "Radio Colonia", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/COLONIAAAC.aac", api_url: "" },
-    { name: "Radio Argentina", url: "https://server.laradio.online:15224/live.mp3", api_url: "" },
-    { name: "Radio Continental", url: "https://edge05.radiohdvivo.com/continental", api_url: "" },
-    { name: "Infobae 97.1", url: " https://playerservices.streamtheworld.com/api/livestream-redirect/INFOBAE.mp3", api_url: "" },
-    { name: "Public Radio (NPR)", url: "https://npr-ice.streamguys1.com/live.mp3", api_url: "" },
-
-    // --- CONCENTRACIÓN Y ESTUDIO ---
-    { name: "Radio Swiss Classic", url: "https://stream.srg-ssr.ch/m/rsc_de/mp3_128", api_url: "" },
-    { name: "Chillhop Radio (Lo-Fi)", url: "http://stream.zeno.fm/f3wvbbqmdg8uv", api_url: "" },
-    { name: "Ambient Sleeping Pill", url: "http://radio.stereoscenic.com/asp-s", api_url: "" },
-    { name: "JazzGroove", url: "http://199.180.72.2:8015/listen.pls?sid=1", api_url: "" },
-
-    // Estaciones de la BBC (Bloque Completo)
-    { name: "BBC Radio 1", url: "http://lsn.lv/bbcradio.m3u8?station=bbc_radio_one&bitrate=96000", api_url: "" },
-    { name: "BBC Radio 1Xtra", url: "hhttp://lsn.lv/bbcradio.m3u8?station=bbc_1xtra&bitrate=96000", api_url: "" },
-    { name: "BBC Radio 2", url: "http://lsn.lv/bbcradio.m3u8?station=bbc_radio_two&bitrate=96000", api_url: "" },
-    { name: "BBC Radio 3", url: "http://lsn.lv/bbcradio.m3u8?station=bbc_radio_three&bitrate=96000", api_url: "" },
-    { name: "BBC Radio 4", url: "hhttp://lsn.lv/bbcradio.m3u8?station=bbc_radio_fourfm&bitrate=96000", api_url: "" },
-    { name: "BBC Radio 4 Extra", url: "http://lsn.lv/bbcradio.m3u8?station=bbc_radio_four_extra&bitrate=96000", api_url: "" },
-    { name: "BBC Radio 5 Live", url: "http://lsn.lv/bbcradio.m3u8?station=bbc_radio_five_live&bitrate=96000", api_url: "" },
-    { name: "BBC Radio 6 Music", url: "http://lsn.lv/bbcradio.m3u8?station=bbc_6music&bitrate=96000", api_url: "" },
-    { name: "BBC World Service", url: "http://stream.live.vc.bbcmedia.co.uk/bbc_world_service", api_url: "" },
-
-
-    // --- RADIO PARADISE (Mixes) ---
-    { name: "Radio Paradise - Main", url: "http://stream.radioparadise.com/aac-128", api_url: "" },
-    { name: "Radio Paradise - Mellow", url: "http://stream.radioparadise.com/mellow-128", api_url: "" },
-    { name: "Radio Paradise - Rock", url: "http://stream.radioparadise.com/rock-128", api_url: "" },
-    { name: "Radio Paradise - Eclectic", url: "http://stream.radioparadise.com/eclectic-128", api_url: "" },
-    
-    // --- SOMAFM  ---
-    { name: "SomaFM - Groove Salad", url: "https://ice1.somafm.com/groovesalad-128-mp3" },
-    { name: "SomaFM - SomaFM Live", url: "https://ice2.somafm.com/live-128-aac", api_url: "https://somafm.com/songs/live.json" },
-    { name: "SomaFM - Covers", url: "https://ice2.somafm.com/covers-128-aac", api_url: "https://somafm.com/songs/covers.json" },
-    { name: "SomaFM - Drone Zone", url: "https://ice2.somafm.com/dronezone-128-aac", api_url: "https://somafm.com/songs/dronezone.json" },
-    { name: "SomaFM - Deep Space One", url: "https://ice2.somafm.com/deepspaceone-128-aac", api_url: "https://somafm.com/songs/deepspaceone.json" },
-    { name: "SomaFM - Indie Pop Rocks!", url: "https://ice2.somafm.com/indiepop-128-aac", api_url: "https://somafm.com/songs/indiepop.json" },
-    { name: "SomaFM - Space Station Soma", url: "https://ice2.somafm.com/spacestation-128-aac", api_url: "https://somafm.com/songs/spacestation.json" },
-    { name: "SomaFM - Secret Agent", url: "https://ice2.somafm.com/secretagent-128-aac", api_url: "https://somafm.com/songs/secretagent.json" },
-    { name: "SomaFM - Lush", url: "https://ice2.somafm.com/lush-128-aac", api_url: "https://somafm.com/songs/lush.json" },
-    { name: "SomaFM - Underground 80s", url: "https://ice2.somafm.com/u80s-128-aac", api_url: "https://somafm.com/songs/u80s.json" },
-    { name: "SomaFM - Left Coast 70s", url: "https://ice2.somafm.com/seventies-128-aac", api_url: "https://somafm.com/songs/seventies.json" },
-    { name: "SomaFM - DEF CON Radio", url: "https://ice2.somafm.com/defcon-128-aac", api_url: "https://somafm.com/songs/defcon.json" },
-    { name: "SomaFM - Folk Forward", url: "https://ice2.somafm.com/folkfwd-128-aac", api_url: "https://somafm.com/songs/folkfwd.json" },
-    { name: "SomaFM - The Trip", url: "https://ice2.somafm.com/thetrip-128-aac", api_url: "https://somafm.com/songs/thetrip.json" },
-    { name: "SomaFM - Suburbs of Goa", url: "https://ice2.somafm.com/suburbsofgoa-128-aac", api_url: "https://somafm.com/songs/suburbsofgoa.json" },
-    { name: "SomaFM - Seven Inch Soul", url: "https://ice2.somafm.com/7soul-128-aac", api_url: "https://somafm.com/songs/7soul.json" },
-    { name: "SomaFM - Mission Control", url: "https://ice2.somafm.com/missioncontrol-128-aac", api_url: "https://somafm.com/songs/missioncontrol.json" },
-    { name: "SomaFM - cliqhop idm", url: "https://ice2.somafm.com/cliqhop-128-aac", api_url: "https://somafm.com/songs/cliqhop.json" },
-    { name: "SomaFM - Black Rock FM", url: "https://ice2.somafm.com/brfm-128-aac", api_url: "https://somafm.com/songs/brfm.json" },
-    { name: "SomaFM - Doomed (Special)", url: "https://ice2.somafm.com/specials-128-aac", api_url: "https://somafm.com/songs/specials.json" },
-    { name: "SomaFM - Metal Detector", url: "https://ice2.somafm.com/metal-128-aac", api_url: "https://somafm.com/songs/metal.json" }
+    { name: "Aspen Radio 102.3", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/ASPEN.mp3", api_url: "", tags: "Classics", favorite: false },
+    { name: "Infobae 97.1", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/INFOBAE.mp3", api_url: "", tags: "News", favorite: false },
+    { name: "Public Radio (NPR)", url: "https://npr-ice.streamguys1.com/live.mp3", api_url: "", tags: "News", favorite: false },
+    { name: "Radio Swiss Classic", url: "https://stream.srg-ssr.ch/m/rsc_de/mp3_128", api_url: "", tags: "Classical", favorite: false },
+    { name: "Chillhop Radio (Lo-Fi)", url: "http://stream.zeno.fm/f3wvbbqmdg8uv", api_url: "", tags: "Lo-Fi", favorite: false },
+    { name: "Ambient Sleeping Pill", url: "http://radio.stereoscenic.com/asp-s", api_url: "", tags: "Ambient", favorite: false },
+    { name: "BBC World Service", url: "http://stream.live.vc.bbcmedia.co.uk/bbc_world_service", api_url: "", tags: "News", favorite: false }
 ];
 
-// --- MOTOR DE MARQUESINA DINÁMICA ---
-let displayTimer = null;
+let favoriteStations = [];
+let currentIndex = -1;
+let allStations = []; // Para el JSON gigante de 600 emisoras
 
-async function updateMarquee() {
-    const station = stations[currentIndex];
-    if (!station) return;
-
-    // Si tiene API, buscamos la canción real
-    if (station.api_url) {
-        try {
-            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(station.api_url)}`;
-            const response = await fetch(proxyUrl);
-            const data = await response.json();
-            const realData = JSON.parse(data.contents);
-
-            if (realData.songs && realData.songs.length > 0) {
-                const song = realData.songs[0];
-                nowPlayingText.textContent = `♪ AHORA EN ${station.name.toUpperCase()}: ${song.artist} - ${song.title} ♪`;
-                return;
-            }
-        } catch (e) {
-            console.log("Error de API, usando frases...");
-        }
-    }
-
-    // Si no tiene API o falla, usamos frases random
-    const randomIndex = Math.floor(Math.random() * randomQuotes.length);
-    nowPlayingText.textContent = randomQuotes[randomIndex];
-}
-
-function playRadio() {
-    if (currentIndex === -1) return;
-    audioPlayer.play();
-    statusText.textContent = "Conectando...";
-    
-    audioPlayer.onplaying = () => {
-        statusText.textContent = "En Línea";
-        statusText.style.color = "var(--green)";
-        
-        updateMarquee();
-        if (displayTimer) clearInterval(displayTimer);
-        displayTimer = setInterval(updateMarquee, 20000); 
-    };
-}
-
-let stations = JSON.parse(localStorage.getItem('webradio_stations')) || defaultStations;
-
+// Elementos del DOM
 const listElement = document.getElementById('station-list');
 const audioPlayer = document.getElementById('audio-player');
 const statusText = document.getElementById('status');
 const currentStationText = document.getElementById('current-station');
 const nowPlayingText = document.getElementById('now-playing');
-
 const volumeSlider = document.getElementById('volume-slider');
 const volumeText = document.getElementById('volume-text');
-
-let currentIndex = -1;
-
-let savedVolume = localStorage.getItem('webradio_volume');
-if (savedVolume !== null) {
-    audioPlayer.volume = parseFloat(savedVolume);
-    volumeSlider.value = savedVolume;
-} else {
-    audioPlayer.volume = 0.5;
-    volumeSlider.value = 0.5;
-}
-updateVolumeText();
-
-volumeSlider.addEventListener('input', (e) => {
-    const vol = e.target.value;
-    audioPlayer.volume = vol;
-    localStorage.setItem('webradio_volume', vol);
-    updateVolumeText();
-});
-
-function updateVolumeText() {
-    const percentage = Math.round(volumeSlider.value * 100);
-    volumeText.textContent = `[ ${percentage.toString().padStart(3, ' ')}% ]`;
-}
-
-function saveStations() {
-    localStorage.setItem('webradio_stations', JSON.stringify(stations));
-}
-
-function renderStations() {
-    listElement.innerHTML = ''; 
-    
-    stations.forEach((station, index) => {
-        let li = document.createElement('li');
-        li.className = 'station-item';
-        if (index === currentIndex) {
-            li.classList.add('active-station');
-        }
-        
-        let textSpan = document.createElement('span');
-        textSpan.className = 'station-text';
-        textSpan.textContent = `${(index + 1).toString().padStart(2, '0')} - ${station.name}`;
-        textSpan.onclick = () => selectStation(index);
-
-        let actionDiv = document.createElement('div');
-        
-        let editBtn = document.createElement('button');
-        editBtn.className = 'action-btn btn-edit';
-        editBtn.textContent = '[E]';
-        editBtn.title = 'Editar';
-        editBtn.onclick = (e) => {
-            e.stopPropagation();
-            editStation(index);
-        };
-
-        let deleteBtn = document.createElement('button');
-        deleteBtn.className = 'action-btn btn-delete';
-        deleteBtn.textContent = '[X]';
-        deleteBtn.title = 'Eliminar';
-        deleteBtn.onclick = (e) => {
-            e.stopPropagation();
-            deleteStation(index);
-        };
-
-        actionDiv.appendChild(editBtn);
-        actionDiv.appendChild(deleteBtn);
-
-        li.appendChild(textSpan);
-        li.appendChild(actionDiv);
-        listElement.appendChild(li);
-    });
-}
-
-function selectStation(index) {
-    currentIndex = index;
-    const station = stations[index];
-    audioPlayer.src = station.url;
-    currentStationText.textContent = station.name;
-    renderStations(); 
-    playRadio(); 
-}
-
-function playRadio() {
-    if (currentIndex === -1) {
-        alert(">> EXCEPCIÓN: Ninguna emisora seleccionada.");
-        return;
-    }
-    audioPlayer.play();
-    statusText.textContent = "Conectando...";
-    statusText.style.color = "var(--blue)";
-    nowPlayingText.textContent = "[ Analizando stream de audio... ]";
-    
-    audioPlayer.onplaying = () => {
-        statusText.textContent = "En Línea";
-        statusText.style.color = "var(--green)";
-        nowPlayingText.textContent = "[ Metadatos bloqueados por CORS en navegador cliente. Audio transmitiendo correctamente. ]";
-    };
-}
-
-function stopRadio() {
-    audioPlayer.pause();
-    statusText.textContent = "Detenido";
-    statusText.style.color = "var(--subtext0)";
-    nowPlayingText.textContent = "[ -- ]";
-}
-
-function addNewStation() {
-    const nameInput = document.getElementById('new-name');
-    const urlInput = document.getElementById('new-url');
-    const name = nameInput.value.trim();
-    const url = urlInput.value.trim();
-
-    if (name === "" || url === "") {
-        alert(">> EXCEPCIÓN: Debes ingresar un nombre y una URL válida.");
-        return;
-    }
-
-    stations.push({ name: name, url: url });
-    saveStations();
-    
-    nameInput.value = '';
-    urlInput.value = '';
-    renderStations();
-}
-
-function editStation(index) {
-    const station = stations[index];
-    const newName = prompt(">> EDITAR NOMBRE:", station.name);
-    if (newName === null) return; 
-    
-    const newUrl = prompt(">> EDITAR URL:", station.url);
-    if (newUrl === null) return;
-
-    if (newName.trim() !== "" && newUrl.trim() !== "") {
-        stations[index] = { name: newName.trim(), url: newUrl.trim() };
-        saveStations();
-        
-        if (currentIndex === index) {
-            currentStationText.textContent = stations[index].name;
-            if (audioPlayer.src !== stations[index].url) {
-                audioPlayer.src = stations[index].url;
-                playRadio();
-            }
-        }
-        renderStations();
-    } else {
-        alert(">> EXCEPCIÓN: Los campos no pueden estar vacíos.");
-    }
-}
-
-function deleteStation(index) {
-    const station = stations[index];
-    if (confirm(`¿Estás seguro de que deseas eliminar [ ${station.name} ]?`)) {
-        stations.splice(index, 1);
-        
-        if (currentIndex === index) {
-            stopRadio();
-            currentIndex = -1;
-            currentStationText.textContent = "Ninguno";
-        } else if (currentIndex > index) {
-            currentIndex--;
-        }
-        
-        saveStations();
-        renderStations();
-    }
-}
-
-function exportStations() {
-    // Convertimos nuestra lista a un formato de texto JSON ordenado
-    const dataStr = JSON.stringify(stations, null, 2);
-    // Creamos un "archivo" virtual en la memoria del navegador
-    const blob = new Blob([dataStr], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    
-    // Creamos un enlace invisible, le hacemos clic automáticamente y lo borramos
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = "estaciones_backup.json"; // Nombre del archivo
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-}
-
-function importStations(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            // Intentamos interpretar el texto del archivo como JSON
-            const importedData = JSON.parse(e.target.result);
-            
-            // Verificamos que sea una lista válida antes de romper nuestra app
-            if (Array.isArray(importedData)) {
-                stations = importedData;
-                saveStations(); // Guardamos en el localStorage
-                
-                // Detenemos la radio si estaba sonando para evitar conflictos
-                stopRadio();
-                currentIndex = -1;
-                currentStationText.textContent = "Ninguno";
-                
-                renderStations(); // Redibujamos la lista
-                alert(">> ÉXITO: Base de datos importada correctamente.");
-            } else {
-                alert(">> EXCEPCIÓN: El archivo no tiene el formato correcto.");
-            }
-        } catch (error) {
-            alert(">> EXCEPCIÓN: No se pudo leer el archivo JSON.");
-        }
-    };
-    // Leemos el contenido del archivo
-    reader.readAsText(file);
-    
-    // Reseteamos el input por si el usuario quiere volver a subir el mismo archivo después
-    event.target.value = '';
-}
-
-// --- SISTEMA DE TEMAS ---
-
 const themeSelect = document.getElementById('theme-select');
 
-// 1. Cargamos el tema guardado al iniciar (o usamos 'mocha' por defecto)
-let savedTheme = localStorage.getItem('webradio_theme') || 'mocha';
-document.documentElement.setAttribute('data-theme', savedTheme);
-if (themeSelect) {
-    themeSelect.value = savedTheme;
-}
-
-// 2. Función que se ejecuta cuando cambias el menú desplegable
-function changeTheme() {
-    const newTheme = themeSelect.value;
-    
-    // Cambia el atributo en la etiqueta <html> de la página
-    document.documentElement.setAttribute('data-theme', newTheme);
-    
-    // Lo guardamos en el navegador para la próxima visita
-    localStorage.setItem('webradio_theme', newTheme);
-}
-
-// --- CONTROL POR TECLADO (BARRA ESPACIADORA) ---
-document.addEventListener('keydown', function(event) {
-    // Si el usuario está escribiendo en un input, ignoramos la tecla
-    if (event.target.tagName.toLowerCase() === 'input') return;
-
-    if (event.code === 'Space') {
-        event.preventDefault(); // Evita que la página haga scroll hacia abajo
-        
-        if (audioPlayer.paused) {
-            // Si está pausado y hay una emisora seleccionada, reproducimos
-            if (currentIndex !== -1) {
-                playRadio();
-            } else {
-                // Si no hay emisora seleccionada, reproducimos la primera (0) por defecto
-                selectStation(0);
-            }
-        } else {
-            // Si está sonando, detenemos
-            stopRadio();
-        }
+// ==========================================
+// INICIALIZACIÓN
+// ==========================================
+async function initApp() {
+    // 1. Cargar favoritos o defaults
+    const saved = localStorage.getItem('favorites');
+    if (saved && JSON.parse(saved).length > 0) {
+        favoriteStations = JSON.parse(saved);
+    } else {
+        favoriteStations = [...defaultStations];
+        saveStations();
     }
-});
+
+    // 2. Cargar el JSON maestro para el buscador
+    try {
+        const response = await fetch("estacioneslimpias.json");
+        allStations = await response.json();
+    } catch (error) {
+        console.warn("> ADVERTENCIA: No se pudo cargar la lista de estaciones");
+    }
+
+    // 3. Cargar Tema Guardado
+    let savedTheme = localStorage.getItem('webradio_theme') || 'mocha';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    if (themeSelect) themeSelect.value = savedTheme;
+
+    renderStations();
+    loadVolume();
+}
+
+window.onload = initApp;
+
+function saveStations() {
+    localStorage.setItem('favorites', JSON.stringify(favoriteStations));
+}
 
 function renderStations() {
-    listElement.innerHTML = ''; 
-    
-    // Hacemos una copia para ordenar, pero le pegamos una etiqueta con su 'índice original' 
-    // a cada emisora para no perder el rastro de quién es quién en la base de datos.
-    const displayOrder = stations.map((station, index) => {
+    listElement.innerHTML = '';
+
+    // Ordenamos: primero las favoritas, pero guardamos el índice original para no romper la reproducción
+    const displayOrder = favoriteStations.map((station, index) => {
         return { ...station, originalIndex: index };
     }).sort((a, b) => (b.favorite === true) - (a.favorite === true));
 
     displayOrder.forEach((station) => {
-        const index = station.originalIndex; // Recuperamos su número real
-        
+        const index = station.originalIndex;
+
         let li = document.createElement('li');
         li.className = 'station-item';
         if (index === currentIndex) li.classList.add('active-station');
         if (station.favorite) li.classList.add('is-favorite');
-        
-        // --- 1. Botón de Corazón ---
+
+        // Botón Corazón
         let favSpan = document.createElement('span');
         favSpan.className = `fav-btn ${station.favorite ? 'active' : ''}`;
         favSpan.textContent = station.favorite ? '♥' : '♡';
-        favSpan.onclick = (e) => toggleFavorite(index, e);
+        favSpan.onclick = (e) => { e.stopPropagation(); toggleFavorite(index); };
 
-        // --- 2. Texto de la estación ---
+        // Texto de la emisora
         let textSpan = document.createElement('span');
         textSpan.className = 'station-text';
         textSpan.textContent = `${(index + 1).toString().padStart(2, '0')} - ${station.name}`;
         textSpan.onclick = () => selectStation(index);
 
-        // --- 3. Botones de Acción [E] y [X] ---
+        // Botones de Acción
         let actionDiv = document.createElement('div');
         
         let editBtn = document.createElement('button');
@@ -419,25 +102,301 @@ function renderStations() {
         deleteBtn.textContent = '[X]';
         deleteBtn.onclick = (e) => { e.stopPropagation(); deleteStation(index); };
 
-        // Ensamblamos las piezas
         actionDiv.appendChild(editBtn);
         actionDiv.appendChild(deleteBtn);
+
         li.appendChild(favSpan);
         li.appendChild(textSpan);
         li.appendChild(actionDiv);
-        
+
         listElement.appendChild(li);
     });
 }
 
-function toggleFavorite(index, event) {
-    event.stopPropagation(); // Frenamos el clic para que no active la radio por accidente
+// ==========================================
+// REPRODUCCIÓN
+// ==========================================
+function selectStation(index) {
+    currentIndex = index;
+    const station = favoriteStations[index];
     
-    // Si la estación no tenía la propiedad favorite, al negarla se vuelve 'true'
-    stations[index].favorite = !stations[index].favorite;
+    audioPlayer.src = station.url; // <--- Esto faltaba o estaba roto en tu código original
+    currentStationText.textContent = station.name;
     
-    saveStations();
-    renderStations(); // Redibujamos la pantalla para que la emisora salte arriba
+    renderStations();
+    playRadio();
 }
- 
-renderStations();
+
+function playRadio() {
+    // Si no hay ninguna URL cargada en el reproductor, no hacemos nada
+    if (!audioPlayer.getAttribute('src')) {
+        alert("> EXCEPCIÓN: Ninguna emisora seleccionada.");
+        return;
+    }
+
+    statusText.textContent = "Conectando...";
+    statusText.style.color = "var(--blue)";
+    nowPlayingText.textContent = "[ Analizando stream... ]";
+
+    audioPlayer.play().then(() => {
+        statusText.textContent = "En Línea";
+        statusText.style.color = "var(--green)";
+        // Ahora lee el nombre directamente del texto superior en lugar del índice
+        nowPlayingText.textContent = `[ Transmitiendo: ${currentStationText.textContent} ]`;
+    }).catch(err => {
+        statusText.textContent = "Error";
+        statusText.style.color = "var(--red)";
+        nowPlayingText.textContent = "[ Fallo de conexión o formato no soportado ]";
+        console.error(err);
+    });
+}
+
+// Control por Barra Espaciadora actualizado
+document.addEventListener('keydown', function (event) {
+    if (event.target.tagName.toLowerCase() === 'input') return;
+    if (event.code === 'Space') {
+        event.preventDefault();
+        if (audioPlayer.paused) {
+            // Si hay algo cargado (sea de la lista o una pre-escucha), dale play. Si no, pon la estación 0.
+            if (audioPlayer.getAttribute('src')) {
+                playRadio();
+            } else {
+                selectStation(0);
+            }
+        } else {
+            stopRadio();
+        }
+    }
+});
+
+function stopRadio() {
+    audioPlayer.pause();
+    statusText.textContent = "Detenido";
+    statusText.style.color = "var(--subtext0)";
+    nowPlayingText.textContent = "[ -- ]";
+}
+
+// Control por Barra Espaciadora
+document.addEventListener('keydown', function (event) {
+    if (event.target.tagName.toLowerCase() === 'input') return;
+    if (event.code === 'Space') {
+        event.preventDefault();
+        audioPlayer.paused ? (currentIndex !== -1 ? playRadio() : selectStation(0)) : stopRadio();
+    }
+});
+
+// ==========================================
+// GESTIÓN DE LA LISTA
+// ==========================================
+function toggleFavorite(index) {
+    favoriteStations[index].favorite = !favoriteStations[index].favorite;
+    saveStations();
+    renderStations();
+}
+
+function editStation(index) {
+    const station = favoriteStations[index];
+    const newName = prompt("> EDITAR NOMBRE:", station.name);
+    if (newName === null) return;
+    const newUrl = prompt("> EDITAR URL:", station.url);
+    if (newUrl === null) return;
+
+    if (newName.trim() && newUrl.trim()) {
+        favoriteStations[index].name = newName.trim();
+        favoriteStations[index].url = newUrl.trim();
+        saveStations();
+        if (currentIndex === index) {
+            currentStationText.textContent = favoriteStations[index].name;
+            audioPlayer.src = favoriteStations[index].url;
+            playRadio();
+        }
+        renderStations();
+    }
+}
+
+function deleteStation(index) {
+    if (confirm(`¿Eliminar [ ${favoriteStations[index].name} ]?`)) {
+        favoriteStations.splice(index, 1);
+        if (currentIndex === index) { stopRadio(); currentIndex = -1; currentStationText.textContent = "Ninguno"; } 
+        else if (currentIndex > index) { currentIndex--; }
+        saveStations();
+        renderStations();
+    }
+}
+
+// ==========================================
+// BUSCADOR EN EL JSON
+// ==========================================
+document.getElementById("search-input").addEventListener("input", e => {
+    const query = e.target.value.toLowerCase();
+    const container = document.getElementById("search-results");
+    
+    if (query.length < 3) {
+        container.innerHTML = "";
+        return;
+    }
+
+    // Lista negra (HTML5 no lee playlists)
+    const extensionesInvalidas = ['.pls', '.m3u', '.asx'];
+
+    const results = allStations.filter(s => {
+        const url = s.url_stream.toLowerCase();
+        const esInvalida = extensionesInvalidas.some(ext => url.endsWith(ext));
+        const coincideBusqueda = s.name.toLowerCase().includes(query) || 
+                                 (s.iso_3166_1 && s.iso_3166_1.toLowerCase().includes(query));
+
+        return !esInvalida && coincideBusqueda;
+    }).slice(0, 15);
+
+    container.innerHTML = "";
+    results.forEach(station => {
+        const exists = favoriteStations.some(f => f.url === station.url_stream);
+        
+        const div = document.createElement("div");
+        div.style.display = "flex";
+        div.style.justifyContent = "space-between";
+        div.style.padding = "5px 0";
+        div.style.borderBottom = "1px dashed var(--surface2)";
+        div.style.alignItems = "center";
+        
+        // Generación dinámica de los botones
+        let actionButton = exists 
+            ? `<button class="action-btn" style="color: var(--red)" onclick='removeFromSearch(${JSON.stringify(station.url_stream)})'>[ Quitar - ]</button>`
+            : `<button class="action-btn" style="color: var(--green)" onclick='addFromSearch(${JSON.stringify(station.name)}, ${JSON.stringify(station.url_stream)})'>[ + Agregar ]</button>`;
+
+        div.innerHTML = `
+            <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; padding-right: 15px;" title="${station.name}">
+                ${station.name} <em>(${station.iso_3166_1 || '??'})</em>
+            </span>
+            <div style="display: flex; gap: 10px; flex-shrink: 0;">
+                <button class="action-btn" style="color: var(--blue)" 
+                        onclick='previewFromSearch(${JSON.stringify(station.name)}, ${JSON.stringify(station.url_stream)})'>
+                    [ Escuchar ]
+                </button>
+                ${actionButton}
+            </div>
+        `;
+        container.appendChild(div);
+    });
+});
+
+// Función para pre-escuchar sin guardar
+window.previewFromSearch = function(name, url) {
+    currentIndex = -1;
+    renderStations();
+    audioPlayer.src = url;
+    currentStationText.textContent = `${name} (Preview)`;
+    playRadio();
+};
+
+// Función para guardar
+window.addFromSearch = function(name, url) {
+    favoriteStations.push({ name: name, url: url, favorite: false });
+    saveStations();
+    renderStations();
+    document.getElementById("search-input").dispatchEvent(new Event('input')); // Refresca el botón
+};
+
+// Función para quitar desde el buscador
+window.removeFromSearch = function(url) {
+    const index = favoriteStations.findIndex(s => s.url === url);
+    if (index !== -1) {
+        favoriteStations.splice(index, 1);
+        
+        // Prevenir que la radio siga sonando si justo borramos la emisora activa de la lista
+        if (currentIndex === index) { 
+            stopRadio(); 
+            currentIndex = -1; 
+            currentStationText.textContent = "Ninguno"; 
+        } else if (currentIndex > index) { 
+            currentIndex--; 
+        }
+
+        saveStations();
+        renderStations();
+        document.getElementById("search-input").dispatchEvent(new Event('input')); // Refresca el botón de nuevo a [+ Agregar]
+    }
+};
+
+// Función para pre-escuchar sin guardar
+window.previewFromSearch = function(name, url) {
+    currentIndex = -1; // Deseleccionamos cualquier radio de la lista principal
+    renderStations();  // Actualizamos la lista visual (para que se quite el resaltado azul)
+    
+    audioPlayer.src = url;
+    currentStationText.textContent = `${name} (Preview)`; // Le ponemos la etiqueta preview
+    
+    playRadio(); // Ejecutamos la radio
+};
+
+// Función para guardar
+window.addFromSearch = function(name, url) {
+    favoriteStations.push({ name: name, url: url, favorite: false });
+    saveStations();
+    renderStations();
+    document.getElementById("search-input").dispatchEvent(new Event('input')); // Refresca el botón
+};
+
+// ==========================================
+// IMPORTAR / EXPORTAR
+// ==========================================
+function exportStations() {
+    const dataStr = JSON.stringify(favoriteStations, null, 2);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = "hyradio_backup.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function importStations(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        try {
+            const importedData = JSON.parse(e.target.result);
+            if (Array.isArray(importedData)) {
+                favoriteStations = importedData;
+                saveStations();
+                stopRadio();
+                currentIndex = -1;
+                currentStationText.textContent = "Ninguno";
+                renderStations();
+                alert("> ÉXITO: Lista importada.");
+            }
+        } catch (error) { alert("> EXCEPCIÓN: Archivo inválido."); }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+}
+
+// ==========================================
+// UTILIDADES (Volumen y Tema)
+// ==========================================
+function loadVolume() {
+    let savedVolume = localStorage.getItem('webradio_volume') || 0.5;
+    audioPlayer.volume = savedVolume;
+    volumeSlider.value = savedVolume;
+    updateVolumeText();
+}
+
+volumeSlider.addEventListener('input', (e) => {
+    audioPlayer.volume = e.target.value;
+    localStorage.setItem('webradio_volume', e.target.value);
+    updateVolumeText();
+});
+
+function updateVolumeText() {
+    volumeText.textContent = `[ ${Math.round(volumeSlider.value * 100).toString().padStart(3, ' ')}% ]`;
+}
+
+function changeTheme() {
+    const newTheme = themeSelect.value;
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('webradio_theme', newTheme);
+}
