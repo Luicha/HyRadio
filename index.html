@@ -23,6 +23,7 @@
         <div class="top-bar-content">
             <span>> ESTADO: <span id="status" class="status-text">Detenido</span></span>
             <span class="separator">|</span>
+            <!-- <span>> STREAM: <span id="current-station" class="stream-text">Ninguno</span></span>  -->
             <span>> STREAM: <span id="current-station" class="stream-text">Ninguno</span></span>
             <span class="separator">|</span>
 
@@ -30,47 +31,9 @@
             <button class="main-btn" onclick="playRadio()">[ Play ]</button>
             <button class="main-btn" onclick="stopRadio()">[ Stop ]</button>
 
+            
             <span class="separator">|</span>
-            <div class="volume-container">
-                <span>VOL</span>
-                <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5">
-                <span class="vol-text" id="volume-text">[ 50% ]</span>
-            </div>
-            <span class="separator">|</span>
-            <div class="theme-container" style="display: flex; align-items: center; gap: 10px;">
-                <span>TEMA:</span>
-                <select id="theme-select" class="theme-select" onchange="changeTheme()">
-                    <optgroup label="Catppuccin">
-                        <option value="mocha">Mocha (Oscuro)</option>
-                        <option value="macchiato">Macchiato</option>
-                        <option value="frappe">Frappé</option>
-                        <option value="latte">Latte (Claro)</option>
-                    </optgroup>
-                    <optgroup label="Modernos / Programación">
-                        <option value="dracula">Dracula</option>
-                        <option value="nord">Nord</option>
-                        <option value="tokyonight">Tokyo Night</option>
-                        <option value="onedark">One Dark</option>
-                        <option value="monokai">Monokai</option>
-                    </optgroup>
-                    <optgroup label="Vintage / Cálidos">
-                        <option value="gruvbox-dark">Gruvbox Dark</option>
-                        <option value="gruvbox-light">Gruvbox Light</option>
-                        <option value="solarized-dark">Solarized Dark</option>
-                        <option value="solarized-light">Solarized Light</option>
-                    </optgroup>
-                    <optgroup label="Neón / Cyberpunk">
-                        <option value="cyberpunk">Cyberpunk 2077</option>
-                        <option value="synthwave">Synthwave '84</option>
-                        <option value="hacker">Matrix Hacker</option>
-                    </optgroup>
-                    <optgroup label="Monitores CRT Clásicos">
-                        <option value="retro-green">Fósforo Verde</option>
-                        <option value="retro-amber">Fósforo Ámbar</option>
-                        <option value="retro-cyan">Fósforo Cian</option>
-                    </optgroup>
-                </select>
-            </div>
+            
         </div>
     </header>
 
@@ -80,34 +43,69 @@
 
         <ul class="station-list" id="station-list"></ul>
         <div class="console-box">
-            <p>> Explorar catálogo global</p>
+            <p>> Buscar radios del mundo</p>
             <input type="text" id="search-input" placeholder="Buscar por nombre o país...">
+            
             <div id="search-results"></div>
         </div>
-        <div class="console-box"> <!-- Agregar emisora -->
-            <p>> Agregar estación... </p>
-            <input type="text" id="new-name" placeholder="Nombre (ej. Vorterix)">
-            <input type="text" id="new-url" placeholder="URL (ej. http://stream.com/live.mp3)">
-        </div>
         <div class="console-box"> <!-- Exportar e importar lista de radios -->
-            <p>> Importar / Exportar emisoras </p>
+            <p>> Exportar / Importar emisoras </p>
             <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importStations(event)">
             <button class="main-btn" onclick="exportStations()">[ Exportar emisoras ]</button>
-            <button class="main-btn" onclick="document.getElementById('import-file').click()">[ Importar emisoras
-                ]</button>
+            <button class="main-btn" onclick="document.getElementById('import-file').click()">[ Importar emisoras ]</button>
         </div>
     </div>
 
     <footer class="bottom-bar">
         <div class="bottom-bar-content">
+            
+            <div class="theme-container" style="display: flex; align-items: center; gap: 10px;margin-left: 20px;">
+                <span>TEMA:</span>
+                <select id="theme-select" class="theme-select" onchange="changeTheme()">
+                    <optgroup label="Catppuccin">
+                        <option value="mocha">Mocha (Oscuro)</option>
+                        <option value="macchiato">Macchiato</option>
+                        <option value="frappe">Frappé</option>
+                        <option value="latte">Latte (Claro)</option>
+                    </optgroup>
+                    <optgroup label="Modernos">
+                        <option value="dracula">Dracula</option>
+                        <option value="nord">Nord</option>
+                        <option value="tokyonight">Tokyo Night</option>
+                        <option value="onedark">One Dark</option>
+                        <option value="monokai">Monokai</option>
+                    </optgroup>
+                    <optgroup label="Vintage">
+                        <option value="gruvbox-dark">Gruvbox Dark</option>
+                        <option value="gruvbox-light">Gruvbox Light</option>
+                        <option value="solarized-dark">Solarized Dark</option>
+                        <option value="solarized-light">Solarized Light</option>
+                    </optgroup>
+                    <optgroup label="Neón">
+                        <option value="cyberpunk">Cyberpunk 2077</option>
+                        <option value="synthwave">Synthwave '84</option>
+                        <option value="hacker">Matrix Hacker</option>
+                    </optgroup>
+                    <optgroup label="Monitores CRT">
+                        <option value="retro-green">Fósforo Verde</option>
+                        <option value="retro-amber">Fósforo Ámbar</option>
+                        <option value="retro-cyan">Fósforo Cian</option>
+                    </optgroup>
+                </select>
+            </div>
+            <span class="separator" style="margin-right: 10px;">|</span>
             <span class="now-playing-label">> AHORA SUENA:</span>
             <marquee class="now-playing-text" id="now-playing" scrollamount="4">
                 [ Esperando conexión... ]
             </marquee>
+            <span class="separator" style="margin-left: 10px;">|</span>
+            <div class="volume-container">
+                <span>VOL</span>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5">
+                <span class="vol-text" id="volume-text">[ 50% ]</span>
+            </div>
         </div>
     </footer>
-
     <script src="script.js"></script>
 </body>
-
 </html>

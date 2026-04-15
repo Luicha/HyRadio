@@ -93,11 +93,13 @@ function renderStations() {
         let actionDiv = document.createElement('div');
         
         let editBtn = document.createElement('button');
+        editBtn.style.color = "var(--green)";
         editBtn.className = 'action-btn btn-edit';
         editBtn.textContent = '[E]';
         editBtn.onclick = (e) => { e.stopPropagation(); editStation(index); };
 
         let deleteBtn = document.createElement('button');
+        deleteBtn.style.color = "var(--red)";
         deleteBtn.className = 'action-btn btn-delete';
         deleteBtn.textContent = '[X]';
         deleteBtn.onclick = (e) => { e.stopPropagation(); deleteStation(index); };
@@ -112,43 +114,80 @@ function renderStations() {
         listElement.appendChild(li);
     });
 }
-
-// ==========================================
-// REPRODUCCIÓN
-// ==========================================
 function selectStation(index) {
     currentIndex = index;
     const station = favoriteStations[index];
     
-    audioPlayer.src = station.url; // <--- Esto faltaba o estaba roto en tu código original
+    // Detenemos antes de cambiar la fuente
+    audioPlayer.pause();
+    audioPlayer.src = station.url;
     currentStationText.textContent = station.name;
     
     renderStations();
-    playRadio();
+    
+    // Pequeño delay para que el navegador procese el cambio de URL
+    setTimeout(() => {
+        playRadio();
+    }, 100);
 }
 
+let marqueeTimer = null;
+let sessionStartTime = null;
+
 function playRadio() {
-    // Si no hay ninguna URL cargada en el reproductor, no hacemos nada
-    if (!audioPlayer.getAttribute('src')) {
+    if (!audioPlayer.src || audioPlayer.src === "") {
         alert("> EXCEPCIÓN: Ninguna emisora seleccionada.");
         return;
     }
 
     statusText.textContent = "Conectando...";
     statusText.style.color = "var(--blue)";
-    nowPlayingText.textContent = "[ Analizando stream... ]";
+    nowPlayingText.textContent = "[ Estableciendo conexión TCP... ]";
 
     audioPlayer.play().then(() => {
         statusText.textContent = "En Línea";
         statusText.style.color = "var(--green)";
-        // Ahora lee el nombre directamente del texto superior en lugar del índice
-        nowPlayingText.textContent = `[ Transmitiendo: ${currentStationText.textContent} ]`;
+        
+        // Iniciamos el cronómetro de la sesión
+        sessionStartTime = Date.now();
+        
+        // Iniciamos la marquesina (actualización cada 1 segundo)
+        if (marqueeTimer) clearInterval(marqueeTimer);
+        updateMarquee();
+        marqueeTimer = setInterval(updateMarquee, 1000);
+
     }).catch(err => {
         statusText.textContent = "Error";
         statusText.style.color = "var(--red)";
-        nowPlayingText.textContent = "[ Fallo de conexión o formato no soportado ]";
-        console.error(err);
+        console.error("Fallo al reproducir:", err);
     });
+}
+
+function stopRadio() {
+    audioPlayer.pause();
+    statusText.textContent = "Detenido";
+    statusText.style.color = "var(--subtext0)";
+    nowPlayingText.textContent = "[ -- ]";
+    if (marqueeTimer) clearInterval(marqueeTimer);
+}
+
+function updateMarquee() {
+    const stationName = currentStationText.textContent;
+    
+    // 1. Hora Actual (Sistema)
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString();
+
+    // 2. Tiempo de Escucha (Uptime)
+    const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
+    const h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+    const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+    const s = String(elapsed % 60).padStart(2, '0');
+    const uptimeStr = `${h}:${m}:${s}`;
+
+  
+    // 4. Actualización del Texto
+    nowPlayingText.textContent = `${stationName}   >>   STATUS: OK   >>`;
 }
 
 // Control por Barra Espaciadora actualizado
@@ -169,12 +208,6 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
-function stopRadio() {
-    audioPlayer.pause();
-    statusText.textContent = "Detenido";
-    statusText.style.color = "var(--subtext0)";
-    nowPlayingText.textContent = "[ -- ]";
-}
 
 // Control por Barra Espaciadora
 document.addEventListener('keydown', function (event) {
@@ -261,7 +294,7 @@ document.getElementById("search-input").addEventListener("input", e => {
         
         // Generación dinámica de los botones
         let actionButton = exists 
-            ? `<button class="action-btn" style="color: var(--red)" onclick='removeFromSearch(${JSON.stringify(station.url_stream)})'>[ Quitar - ]</button>`
+            ? `<button class="action-btn" style="color: var(--red)" onclick='removeFromSearch(${JSON.stringify(station.url_stream)})'>[&nbsp;- Quitar&nbsp; ]</button>`
             : `<button class="action-btn" style="color: var(--green)" onclick='addFromSearch(${JSON.stringify(station.name)}, ${JSON.stringify(station.url_stream)})'>[ + Agregar ]</button>`;
 
         div.innerHTML = `
