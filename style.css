@@ -135,6 +135,38 @@
     --blue: #00ffff; --mauve: #00ffff; --green: #00ffff; --red: #00ffff; --yellow: #00ffff;
 }
 
+:root[data-theme="violet-night"] {
+    --base: #0b0b0f;
+    --mantle: #12121a;
+    --crust: #050507;
+    --text: #ffffff;
+    --subtext0: #c7c2e6;
+    --surface0: #1b1628;
+    --surface1: #2d2047;
+    --surface2: #5a3ec8;
+    --blue: #7ad7ff;
+    --mauve: #b26cff;
+    --green: #67f2a1;
+    --red: #ff5f8a;
+    --yellow: #ffd86b;
+}
+
+:root[data-theme="neon-purple"] {
+    --base: #000000;
+    --mantle: #0a0a0a;
+    --crust: #050505;
+    --text: #ffffff;
+    --subtext0: #b9b4d6;
+    --surface0: #171122;
+    --surface1: #281a40;
+    --surface2: #8a2be2;
+    --blue: #00d9ff;
+    --mauve: #b026ff;
+    --green: #00ff9c;
+    --red: #ff3b6b;
+    --yellow: #ffe066;
+}
+
 body {
     background-color: var(--base);
     color: var(--text);
