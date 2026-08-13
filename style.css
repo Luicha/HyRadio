@@ -1,7 +1,5 @@
-/* --- TEMAS (Variables CSS) --- */
-
 /* =========================================
-   1. FAMILIA CATPPUCCIN
+   1. FAMILIA CATPPUCCIN (Extremos)
 ========================================= */
 :root {
     --base: #1e1e2e;
@@ -24,16 +22,7 @@
     --subtext0: #a6adc8; --surface0: #313244; --surface1: #45475a; --surface2: #585b70;
     --blue: #89b4fa; --mauve: #cba6f7; --green: #a6e3a1; --red: #f38ba8; --yellow: #f9e2af; 
 }
-:root[data-theme="macchiato"] {
-    --base: #24273a; --mantle: #1e2030; --crust: #181825; --text: #cad3f5;
-    --subtext0: #a5adcb; --surface0: #363a4f; --surface1: #494d64; --surface2: #5b6078;
-    --blue: #8aadf4; --mauve: #c6a0f6; --green: #a6da95; --red: #ed8796; --yellow: #eed49f;
-}
-:root[data-theme="frappe"] {
-    --base: #303446; --mantle: #292c3c; --crust: #232634; --text: #c6d0f5;
-    --subtext0: #a5adce; --surface0: #414559; --surface1: #51576d; --surface2: #626880;
-    --blue: #8caaee; --mauve: #ca9ee6; --green: #a6d189; --red: #e78284; --yellow: #e5c890;
-}
+
 :root[data-theme="latte"] {
     --base: #eff1f5; --mantle: #e6e9ef; --crust: #dce0e8; --text: #4c4f69;
     --subtext0: #6c6f85; --surface0: #ccd0da; --surface1: #bcc0cc; --surface2: #acb0be;
@@ -52,16 +41,6 @@
     --base: #2e3440; --mantle: #242933; --crust: #1d222b; --text: #d8dee9;
     --subtext0: #e5e9f0; --surface0: #3b4252; --surface1: #434c5e; --surface2: #4c566a;
     --blue: #81a1c1; --mauve: #b48ead; --green: #a3be8c; --red: #bf616a; --yellow: #ebcb8b;
-}
-:root[data-theme="tokyonight"] {
-    --base: #1a1b26; --mantle: #16161e; --crust: #111117; --text: #a9b1d6;
-    --subtext0: #565f89; --surface0: #24283b; --surface1: #292e42; --surface2: #414868;
-    --blue: #7aa2f7; --mauve: #bb9af7; --green: #9ece6a; --red: #f7768e; --yellow: #e0af68;
-}
-:root[data-theme="onedark"] {
-    --base: #282c34; --mantle: #21252b; --crust: #181a1f; --text: #abb2bf;
-    --subtext0: #5c6370; --surface0: #2c313c; --surface1: #3e4451; --surface2: #545862;
-    --blue: #61afef; --mauve: #c678dd; --green: #98c379; --red: #e06c75; --yellow: #e5c07b;
 }
 :root[data-theme="monokai"] {
     --base: #272822; --mantle: #1e1f1c; --crust: #171814; --text: #f8f8f2;
@@ -110,14 +89,9 @@
     --subtext0: #ff7edb; --surface0: #34294f; --surface1: #44356a; --surface2: #ff7edb;
     --blue: #36f9f6; --mauve: #fe4450; --green: #72f1b8; --red: #fe4450; --yellow: #fede5d;
 }
-:root[data-theme="hacker"] {
-    --base: #000000; --mantle: #050505; --crust: #0a0a0a; --text: #00ff00;
-    --subtext0: #008800; --surface0: #111111; --surface1: #004400; --surface2: #00aa00;
-    --blue: #00ff00; --mauve: #00ff00; --green: #00ff00; --red: #ff0000; --yellow: #00ff00;
-}
 
 /* =========================================
-   6. TERMINALES CLÁSICAS (Retro CRT)
+   6. TERMINALES CLÁSICAS (Retro CRT - INTACTOS)
 ========================================= */
 :root[data-theme="retro-green"] {
     --base: #0d0d0d; --mantle: #0a0a0a; --crust: #000000; --text: #33ff33;
@@ -134,7 +108,54 @@
     --subtext0: #00cccc; --surface0: #001a1a; --surface1: #003333; --surface2: #004d4d;
     --blue: #00ffff; --mauve: #00ffff; --green: #00ffff; --red: #00ffff; --yellow: #00ffff;
 }
+:root[data-theme="violet-night"] {
+    --base: #0b0b0f; --mantle: #12121a; --crust: #050507; --text: #ffffff;
+    --subtext0: #c7c2e6; --surface0: #1b1628; --surface1: #2d2047;  --surface2: #5a3ec8;
+    --blue: #7ad7ff;  --mauve: #b26cff;  --green: #67f2a1;  --red: #ff5f8a;  --yellow: #ffd86b;
+}
 
+/* =========================================
+   7. TEMAS PREMIUM / AESTHETIC (Nuevos)
+========================================= */
+:root[data-theme="ocean-breeze"] {
+    --base: #0f172a; --mantle: #020617; --crust: #000000; --text: #f8fafc;
+    --subtext0: #94a3b8; --surface0: #1e293b; --surface1: #334155; --surface2: #475569;
+    --blue: #38bdf8; --mauve: #818cf8; --green: #34d399; --red: #fb7185; --yellow: #fbbf24;
+}
+:root[data-theme="miami-nights"] {
+    --base: #120a21; --mantle: #0a0514; --crust: #05020a; --text: #f3e8ff;
+    --subtext0: #c084fc; --surface0: #2e1065; --surface1: #4c1d95; --surface2: #6d28d9;
+    --blue: #06b6d4; --mauve: #ec4899; --green: #10b981; --red: #f43f5e; --yellow: #f59e0b;
+}
+:root[data-theme="rose-gold"] {
+    --base: #1e191a; --mantle: #171314; --crust: #0f0c0d; --text: #fdf8f8;
+    --subtext0: #d9c2c4; --surface0: #312729; --surface1: #45373a; --surface2: #5e4a4d;
+    --blue: #8da2cc; --mauve: #c493af; --green: #9ab89e; --red: #d9737c; --yellow: #e6b981;
+}
+:root[data-theme="matcha"] {
+    --base: #1c2321; --mantle: #151a18; --crust: #0e1110; --text: #e6f0ed;
+    --subtext0: #95a5a0; --surface0: #2b3633; --surface1: #394744; --surface2: #4a5c58;
+    --blue: #5c9cb8; --mauve: #b388ae; --green: #8ebd81; --red: #d17b7b; --yellow: #d9b777;
+}
+:root[data-theme="velvet"] {
+    --base: #140c0e; --mantle: #0d0809; --crust: #050304; --text: #ffe6ea;
+    --subtext0: #b58c93; --surface0: #2b1419; --surface1: #401c23; --surface2: #5c2732;
+    --blue: #7d93b3; --mauve: #9c6d8c; --green: #709170; --red: #e63956; --yellow: #cca870;
+}
+:root[data-theme="alucard"] {
+    --base: #0b0508; --mantle: #14080f; --crust: #060204; --text: #fdf7fb;
+    --subtext0: #d3bfd1; --surface0: #24101d; --surface1: #4b1734; --surface2: #7a2858;
+    --blue: #8dc8ff; --mauve: #c35cff; --green: #7ce8b4; --red: #c2183d; --yellow: #f4c86b;
+}
+:root[data-theme="retro-white"] {
+    --base: #0d0d0d; --mantle: #0a0a0a; --crust: #000000; --text: #ffffff;
+    --subtext0: #999999; --surface0: #1a1a1a; --surface1: #222222; --surface2: #333333;
+    --blue: #ffffff; --mauve: #dddddd; --green: #ffffff; --red: #ff5555; --yellow: #ffff66;
+}
+
+/* =========================================
+   ESTILOS GENERALES
+========================================= */
 body {
     background-color: var(--base);
     color: var(--text);
@@ -145,9 +166,7 @@ body {
     padding-bottom: 70px; 
 }
 
-
-
-/* --- BARRA SUPERIOR FIJA --- */
+/* --- BARRAS (SUPERIOR E INFERIOR) COMPARTIDAS --- */
 .top-bar {
     position: sticky;
     top: 0;
@@ -157,70 +176,6 @@ body {
     z-index: 1000;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
-
-.top-bar-content {
-    max-width: 1200px; /* Aumentamos el límite de ancho */
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap; /* Salto de línea si no hay espacio*/
-    gap: 15px;
-    font-size: 0.9em;
-    white-space: nowrap; /* Evita que los textos internos se rompan */
-    overflow-x: auto; /* Permite deslizar hacia los lados en pantallas chicas */
-}
-
-/* Oculta la barra de scroll horizontal para que se vea más limpio */
-.top-bar-content::-webkit-scrollbar {
-    display: none;
-}
-
-.separator { 
-    color: var(--surface2); 
-    font-weight: bold;
-}
-
-.status-text {
-    color: var(--subtext0);
-}
-
-.stream-text {
-    color: var(--blue); 
-    font-weight: bold;
-}
-
-/* --- CONTROL DE VOLUMEN --- */
-.volume-container, .theme-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--mantle);
-    padding: 5px 5px;
-    border: 1px solid var(--surface2);
-    border-radius: 4px;
-}
-
-input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 80px;
-    background: transparent;
-    cursor: pointer;
-}
-
-input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: var(--surface2); border-radius: 0; }
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 16px; width: 8px; background: var(--blue); margin-top: -6px; border-radius: 0; transition: background-color 0.2s;
-}
-input[type="range"]::-webkit-slider-thumb:hover { background: var(--mauve); }
-input[type="range"]::-moz-range-track { width: 100%; height: 4px; background: var(--surface2); border-radius: 0; }
-input[type="range"]::-moz-range-thumb { height: 16px; width: 8px; background: var(--blue); border: none; border-radius: 0; }
-
-.vol-text { color: var(--blue); font-weight: bold; min-width: 45px; text-align: right; }
 
 .bottom-bar {
     position: fixed;
@@ -233,85 +188,147 @@ input[type="range"]::-moz-range-thumb { height: 16px; width: 8px; background: va
     box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.4);
 }
 
-.bottom-bar-content {
-    max-width: 950px;
+.top-bar-content {
+    max-width: 800px; 
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column; /* Apila las dos filas una sobre otra */
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Espaciado entre la línea de arriba y la de abajo */
+    white-space: nowrap;
+}
+
+/* Oculta la barra de scroll horizontal en móviles */
+.top-bar-content::-webkit-scrollbar,
+.bottom-bar-content::-webkit-scrollbar {
+    display: none;
+}
+
+.top-row, .bottom-row {
     display: flex;
     align-items: center;
-    white-space: nowrap;
-    overflow: hidden;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
 }
+
+.bottom-bar-content {
+    max-width: 800px; 
+    margin: 0 auto;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    flex-wrap: wrap; 
+    gap: 15px; 
+    white-space: nowrap;
+}
+
+.bottom-bar-content {
+    max-width: 800px; /* Igual al ancho del container central para simetría perfecta */
+    margin: 0 auto;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centrado absoluto */
+    flex-wrap: wrap; 
+    gap: 15px; 
+    white-space: nowrap;
+}
+
+/* Oculta la barra de scroll horizontal en móviles */
+.top-bar-content::-webkit-scrollbar,
+.bottom-bar-content::-webkit-scrollbar {
+    display: none;
+}
+
+/* --- TEXTOS E INDICADORES DE BARRA --- */
+.separator { color: var(--surface2); font-weight: bold; }
+.status-text { color: var(--subtext0); }
+.stream-text { color: var(--blue); font-weight: bold; }
 
 .now-playing-label { 
     color: var(--mauve); 
     font-weight: bold; 
-    margin-right: 10px; 
     flex-shrink: 0; 
 }
 
 .now-playing-text { 
     color: var(--green); 
-    flex-grow: 1;
-    min-width: 0;
+    width: 300px; /* Ancho fijo */
+    flex-grow: 0; /* IMPIDE que empuje los botones hacia la izquierda */
+    flex-shrink: 0; 
+    
 }
 
-.fav-btn {
-    cursor: pointer;
-    margin-right: 12px;
-    font-size: 1.2em;
-    color: var(--surface2); /* Color apagado por defecto */
-    transition: all 0.2s ease;
-    display: inline-block;
-    min-width: 20px;
-    text-align: center;
-}
-
-.fav-btn.active {
-    color: var(--red); /* Usamos el rojo de la paleta */
-    text-shadow: 0 0 8px var(--red);
-}
-
-.fav-btn:hover {
-    transform: scale(1.2);
-    color: var(--mauve);
-}
-
-.station-item {
+/* --- CONTROLES Y BOTONES --- */
+.volume-container, .theme-container {
     display: flex;
-    align-items: center; /* Alinea el corazón con el texto */
-    padding: 5px 10px;
+    align-items: center;
+    gap: 10px;
+    background: var(--mantle);
+    padding: 0 10px; /* Quitamos el padding vertical para controlar la altura real */
+    height: 36px; /* Altura fija para que todo cuadre */
+    border: 1px solid var(--surface2);
+    border-radius: 4px;
+    box-sizing: border-box; /* Evita que el borde sume tamaño */
 }
 
-/* Para que la estación favorita resalte un poco en la lista */
-.station-item.is-favorite {
-    border-left: 2px solid var(--amber);
-    padding-left: 8px;
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 80px;
+    background: transparent;
+    cursor: pointer;
 }
+input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: var(--surface2); border-radius: 0; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; height: 16px; width: 8px; background: var(--blue); margin-top: -6px; border-radius: 0; transition: background-color 0.2s; }
+input[type="range"]::-webkit-slider-thumb:hover { background: var(--mauve); }
+input[type="range"]::-moz-range-track { width: 100%; height: 4px; background: var(--surface2); border-radius: 0; }
+input[type="range"]::-moz-range-thumb { height: 16px; width: 8px; background: var(--blue); border: none; border-radius: 0; }
+.vol-text { color: var(--blue); font-weight: bold; min-width: 45px; text-align: right; }
+
+button.main-btn { 
+    background: var(--gr); 
+    color: var(--text); 
+    border: 1px solid var(--surface2); 
+    padding: 0 12px; 
+    height: 36px; /* ¡Misma altura que los contenedores! */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer; 
+    font-family: inherit; 
+    text-transform: uppercase; 
+    border-radius: 4px; 
+    transition: all 0.2s ease; 
+    font-weight: bold; 
+    box-sizing: border-box;
+}button.main-btn:hover { background: var(--blue); color: var(--crust); border-color: var(--blue); }
+
+select.theme-select { background: var(--mantle); color: var(--blue); border: 0px solid var(--surface2); padding: 0px 0px; font-family: inherit; font-weight: bold; cursor: pointer; border-radius: 4px; outline: none; }
+select.theme-select:focus { border-color: var(--mauve); }
+select.theme-select option { background: var(--base); color: var(--text);}
+
+input[type="text"] { background: var(--base); color: var(--text); border: 1px solid var(--surface2); padding: 8px; font-family: inherit; margin-right: 10px; margin-bottom: 10px; border-radius: 4px; transition: border-color 0.2s, box-shadow 0.2s; width: calc(100% - 20px); max-width: 300px; }
+input[type="text"]:focus { outline: none; border: 1px solid var(--blue); box-shadow: 0 0 0 2px rgba(137, 180, 250, 0.2); }
 
 /* --- CONTENIDO PRINCIPAL --- */
 .container { max-width: 800px; margin: 0 auto; padding: 20px; }
 h1 { border-bottom: 2px dashed var(--mauve); padding-bottom: 10px; color: var(--mauve); margin-top: 10px; }
 
+.console-box { margin-top: 20px; padding: 15px; background-color: var(--mantle); border: 1px solid var(--surface1); border-radius: 8px; }
+
+/* --- LISTA DE RADIOS --- */
 .station-list { list-style: none; padding: 0; border: 1px solid var(--surface1); background-color: var(--mantle); padding: 10px; max-height: 355px; overflow-y: auto; border-radius: 8px; scrollbar-width: none; -ms-overflow-style: none;}
 .station-item { display: flex; justify-content: space-between; align-items: center; padding: 5px 10px; transition: background-color 0.2s; border-radius: 4px; }
 .station-item:hover { background-color: var(--surface0); }
-.station-text {
-    cursor: pointer;
-    flex-grow: 1;
+.station-item.is-favorite { border-left: 2px solid var(--blue); padding-left: 8px; } /* Cambié a yellow porque --amber no existía en variables */
 
-    white-space: nowrap;        /* Evita que el texto baje a una segunda línea */
-    overflow: hidden;           /* Oculta lo que se sale del contenedor */
-    text-overflow: ellipsis;    /* Agrega los "..." al final */
-    min-width: 0;               /* Le da permiso al flexbox para encogerse */
-    margin-right: 15px;
-}
-.station-item > div {
-    flex-shrink: 0;             /* Evita que los botones pierdan su tamaño original */
-    display: flex;
-    gap: 5px;
-}
-
+.station-text { cursor: pointer; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; margin-right: 15px; }
+.station-item > div { flex-shrink: 0; display: flex; gap: 5px; }
 .active-station { font-weight: bold; background-color: var(--blue); color: var(--crust); }
 .action-btn { background: none; border: none; color: var(--subtext0); cursor: pointer; font-family: inherit; font-weight: bold; padding: 0 5px; transition: color 0.2s; }
 .btn-edit:hover { color: var(--yellow); }
@@ -319,27 +336,30 @@ h1 { border-bottom: 2px dashed var(--mauve); padding-bottom: 10px; color: var(--
 .active-station .action-btn { color: var(--crust); opacity: 0.7; }
 .active-station .action-btn:hover { opacity: 1; }
 
-.console-box { margin-top: 20px; padding: 15px; background-color: var(--mantle); border: 1px solid var(--surface1); border-radius: 8px; }
+.fav-btn { cursor: pointer; margin-right: 12px; font-size: 1.2em; color: var(--surface2); transition: all 0.2s ease; display: inline-block; min-width: 20px; text-align: center; }
+.fav-btn.active { color: var(--red); text-shadow: 0 0 8px var(--red); }
+.fav-btn:hover { transform: scale(1.2); color: var(--mauve); }
 
-button.main-btn { background: var(--crust); color: var(--text); border: 1px solid var(--surface2); padding: 6px 12px; cursor: pointer; font-family: inherit; text-transform: uppercase; border-radius: 4px; transition: all 0.2s ease; font-weight: bold; }
-button.main-btn:hover { background: var(--blue); color: var(--crust); border-color: var(--blue); }
+/* --- ESTILOS ESPECÍFICOS PARA PLAY Y STOP --- */
 
-input[type="text"] { background: var(--base); color: var(--text); border: 1px solid var(--surface2); padding: 8px; font-family: inherit; margin-right: 10px; margin-bottom: 10px; border-radius: 4px; transition: border-color 0.2s, box-shadow 0.2s; width: calc(100% - 20px); max-width: 300px; }
-input[type="text"]:focus { outline: none; border: 1px solid var(--blue); box-shadow: 0 0 0 2px rgba(137, 180, 250, 0.2); }
-
-@media (max-width: 768px) { .separator { display: none; } }
-
-select.theme-select {
-    background: var(--mantle);
-    color: var(--blue);
-    border: 0px solid var(--surface2);
-    padding: 0px 0px;
-    font-family: inherit;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 4px;
-    outline: none;
+/* Botón Play siempre con borde verde */
+#play-btn {
+    border-color: var(--green);
+    color: var(--green);
+}
+#play-btn:hover {
+    background: var(--green);
+    color: var(--crust);
 }
 
-select.theme-select:focus { border-color: var(--mauve); }
-select.theme-select option { background: var(--base); color: var(--text);}
+/* Botón Stop se pone rojo SOLO cuando tiene la clase .is-playing */
+#stop-btn.is-playing {
+    border-color: var(--red);
+    color: var(--red);
+}
+#stop-btn.is-playing:hover {
+    background: var(--red);
+    color: var(--crust);
+}
+
+@media (max-width: 768px) { .separator { display: none; } }

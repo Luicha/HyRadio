@@ -13,14 +13,13 @@ const defaultStations = [
 
 let favoriteStations = [];
 let currentIndex = -1;
-let allStations = []; // Para el JSON gigante de 600 emisoras
+let allStations = []; // Para el JSON gigante de emisoras
 
 // Elementos del DOM
 const listElement = document.getElementById('station-list');
 const audioPlayer = document.getElementById('audio-player');
 const statusText = document.getElementById('status');
 const currentStationText = document.getElementById('current-station');
-const nowPlayingText = document.getElementById('now-playing');
 const volumeSlider = document.getElementById('volume-slider');
 const volumeText = document.getElementById('volume-text');
 const themeSelect = document.getElementById('theme-select');
@@ -114,6 +113,7 @@ function renderStations() {
         listElement.appendChild(li);
     });
 }
+
 function selectStation(index) {
     currentIndex = index;
     const station = favoriteStations[index];
@@ -131,9 +131,9 @@ function selectStation(index) {
     }, 100);
 }
 
-let marqueeTimer = null;
-let sessionStartTime = null;
-
+// ==========================================
+// REPRODUCCIÓN (PLAY / STOP)
+// ==========================================
 function playRadio() {
     if (!audioPlayer.src || audioPlayer.src === "") {
         alert("> EXCEPCIÓN: Ninguna emisora seleccionada.");
@@ -142,55 +142,27 @@ function playRadio() {
 
     statusText.textContent = "Conectando...";
     statusText.style.color = "var(--blue)";
-    nowPlayingText.textContent = "[ Estableciendo conexión TCP... ]";
 
     audioPlayer.play().then(() => {
         statusText.textContent = "En Línea";
         statusText.style.color = "var(--green)";
-        
-        // Iniciamos el cronómetro de la sesión
-        sessionStartTime = Date.now();
-        
-        // Iniciamos la marquesina (actualización cada 1 segundo)
-        if (marqueeTimer) clearInterval(marqueeTimer);
-        updateMarquee();
-        marqueeTimer = setInterval(updateMarquee, 1000);
-
     }).catch(err => {
         statusText.textContent = "Error";
         statusText.style.color = "var(--red)";
         console.error("Fallo al reproducir:", err);
     });
+    
+    document.getElementById("stop-btn").classList.add("is-playing");
 }
 
 function stopRadio() {
     audioPlayer.pause();
     statusText.textContent = "Detenido";
     statusText.style.color = "var(--subtext0)";
-    nowPlayingText.textContent = "[ -- ]";
-    if (marqueeTimer) clearInterval(marqueeTimer);
+    document.getElementById("stop-btn").classList.remove("is-playing");
 }
 
-function updateMarquee() {
-    const stationName = currentStationText.textContent;
-    
-    // 1. Hora Actual (Sistema)
-    const now = new Date();
-    const timeStr = now.toLocaleTimeString();
-
-    // 2. Tiempo de Escucha (Uptime)
-    const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
-    const h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
-    const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
-    const s = String(elapsed % 60).padStart(2, '0');
-    const uptimeStr = `${h}:${m}:${s}`;
-
-  
-    // 4. Actualización del Texto
-    nowPlayingText.textContent = `${stationName}   >>   STATUS: OK   >>`;
-}
-
-// Control por Barra Espaciadora actualizado
+// Control por Barra Espaciadora
 document.addEventListener('keydown', function (event) {
     if (event.target.tagName.toLowerCase() === 'input') return;
     if (event.code === 'Space') {
@@ -205,16 +177,6 @@ document.addEventListener('keydown', function (event) {
         } else {
             stopRadio();
         }
-    }
-});
-
-
-// Control por Barra Espaciadora
-document.addEventListener('keydown', function (event) {
-    if (event.target.tagName.toLowerCase() === 'input') return;
-    if (event.code === 'Space') {
-        event.preventDefault();
-        audioPlayer.paused ? (currentIndex !== -1 ? playRadio() : selectStation(0)) : stopRadio();
     }
 });
 
@@ -312,23 +274,6 @@ document.getElementById("search-input").addEventListener("input", e => {
         container.appendChild(div);
     });
 });
-
-// Función para pre-escuchar sin guardar
-window.previewFromSearch = function(name, url) {
-    currentIndex = -1;
-    renderStations();
-    audioPlayer.src = url;
-    currentStationText.textContent = `${name} (Preview)`;
-    playRadio();
-};
-
-// Función para guardar
-window.addFromSearch = function(name, url) {
-    favoriteStations.push({ name: name, url: url, favorite: false });
-    saveStations();
-    renderStations();
-    document.getElementById("search-input").dispatchEvent(new Event('input')); // Refresca el botón
-};
 
 // Función para quitar desde el buscador
 window.removeFromSearch = function(url) {
@@ -432,4 +377,26 @@ function changeTheme() {
     const newTheme = themeSelect.value;
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('webradio_theme', newTheme);
+}
+
+// Avanza al siguiente tema
+function nextTheme() {
+    const select = document.getElementById("theme-select");
+    if (select.selectedIndex < select.options.length - 1) {
+        select.selectedIndex++;
+    } else {
+        select.selectedIndex = 0; 
+    }
+    changeTheme();
+}
+
+// Retrocede al tema anterior
+function prevTheme() {
+    const select = document.getElementById("theme-select");
+    if (select.selectedIndex > 0) {
+        select.selectedIndex--;
+    } else {
+        select.selectedIndex = select.options.length - 1; 
+    }
+    changeTheme();
 }
