@@ -1,6 +1,3 @@
-// ==========================================
-// CONFIGURACIÓN INICIAL Y ESTADO GLOBAL
-// ==========================================
 const defaultStations = [
     { name: "Aspen Radio 102.3", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/ASPEN.mp3", api_url: "", tags: "Classics", favorite: false },
     { name: "Infobae 97.1", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/INFOBAE.mp3", api_url: "", tags: "News", favorite: false },
@@ -13,9 +10,9 @@ const defaultStations = [
 
 let favoriteStations = [];
 let currentIndex = -1;
-let allStations = []; // Para el JSON gigante de emisoras
+let allStations = []; // Json
 
-// Elementos del DOM
+// DOM
 const listElement = document.getElementById('station-list');
 const audioPlayer = document.getElementById('audio-player');
 const statusText = document.getElementById('status');
@@ -24,11 +21,8 @@ const volumeSlider = document.getElementById('volume-slider');
 const volumeText = document.getElementById('volume-text');
 const themeSelect = document.getElementById('theme-select');
 
-// ==========================================
-// INICIALIZACIÓN
-// ==========================================
 async function initApp() {
-    // 1. Cargar favoritos o defaults
+    // Carga de favoritos o defaults
     const saved = localStorage.getItem('favorites');
     if (saved && JSON.parse(saved).length > 0) {
         favoriteStations = JSON.parse(saved);
@@ -37,7 +31,7 @@ async function initApp() {
         saveStations();
     }
 
-    // 2. Cargar el JSON maestro para el buscador
+    // Carga del JSON principal para el buscador
     try {
         const response = await fetch("estacioneslimpias.json");
         allStations = await response.json();
@@ -45,7 +39,7 @@ async function initApp() {
         console.warn("> ADVERTENCIA: No se pudo cargar la lista de estaciones");
     }
 
-    // 3. Cargar Tema Guardado
+    // Carga del tema elegido
     let savedTheme = localStorage.getItem('webradio_theme') || 'mocha';
     document.documentElement.setAttribute('data-theme', savedTheme);
     if (themeSelect) themeSelect.value = savedTheme;
@@ -63,7 +57,7 @@ function saveStations() {
 function renderStations() {
     listElement.innerHTML = '';
 
-    // Ordenamos: primero las favoritas, pero guardamos el índice original para no romper la reproducción
+    // Orden Primero las favoritas, pero guardamos el índice original para no romper la reproducción
     const displayOrder = favoriteStations.map((station, index) => {
         return { ...station, originalIndex: index };
     }).sort((a, b) => (b.favorite === true) - (a.favorite === true));
@@ -76,19 +70,16 @@ function renderStations() {
         if (index === currentIndex) li.classList.add('active-station');
         if (station.favorite) li.classList.add('is-favorite');
 
-        // Botón Corazón
         let favSpan = document.createElement('span');
         favSpan.className = `fav-btn ${station.favorite ? 'active' : ''}`;
         favSpan.textContent = station.favorite ? '♥' : '♡';
         favSpan.onclick = (e) => { e.stopPropagation(); toggleFavorite(index); };
 
-        // Texto de la emisora
         let textSpan = document.createElement('span');
         textSpan.className = 'station-text';
         textSpan.textContent = `${(index + 1).toString().padStart(2, '0')} - ${station.name}`;
         textSpan.onclick = () => selectStation(index);
 
-        // Botones de Acción
         let actionDiv = document.createElement('div');
         
         let editBtn = document.createElement('button');
@@ -118,22 +109,19 @@ function selectStation(index) {
     currentIndex = index;
     const station = favoriteStations[index];
     
-    // Detenemos antes de cambiar la fuente
+    // Stop antes de cambiar la radio
     audioPlayer.pause();
     audioPlayer.src = station.url;
     currentStationText.textContent = station.name;
     
     renderStations();
     
-    // Pequeño delay para que el navegador procese el cambio de URL
+    // Delay para que el navegador procese el cambio de URL
     setTimeout(() => {
         playRadio();
     }, 100);
 }
 
-// ==========================================
-// REPRODUCCIÓN (PLAY / STOP)
-// ==========================================
 function playRadio() {
     if (!audioPlayer.src || audioPlayer.src === "") {
         alert("> EXCEPCIÓN: Ninguna emisora seleccionada.");
@@ -162,13 +150,12 @@ function stopRadio() {
     document.getElementById("stop-btn").classList.remove("is-playing");
 }
 
-// Control por Barra Espaciadora
+// Control para barra espaciadora
 document.addEventListener('keydown', function (event) {
     if (event.target.tagName.toLowerCase() === 'input') return;
     if (event.code === 'Space') {
         event.preventDefault();
         if (audioPlayer.paused) {
-            // Si hay algo cargado (sea de la lista o una pre-escucha), dale play. Si no, pon la estación 0.
             if (audioPlayer.getAttribute('src')) {
                 playRadio();
             } else {
@@ -180,9 +167,6 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
-// ==========================================
-// GESTIÓN DE LA LISTA
-// ==========================================
 function toggleFavorite(index) {
     favoriteStations[index].favorite = !favoriteStations[index].favorite;
     saveStations();
@@ -219,9 +203,6 @@ function deleteStation(index) {
     }
 }
 
-// ==========================================
-// BUSCADOR EN EL JSON
-// ==========================================
 document.getElementById("search-input").addEventListener("input", e => {
     const query = e.target.value.toLowerCase();
     const container = document.getElementById("search-results");
@@ -254,7 +235,6 @@ document.getElementById("search-input").addEventListener("input", e => {
         div.style.borderBottom = "1px dashed var(--surface2)";
         div.style.alignItems = "center";
         
-        // Generación dinámica de los botones
         let actionButton = exists 
             ? `<button class="action-btn" style="color: var(--red)" onclick='removeFromSearch(${JSON.stringify(station.url_stream)})'>[&nbsp;- Quitar&nbsp; ]</button>`
             : `<button class="action-btn" style="color: var(--green)" onclick='addFromSearch(${JSON.stringify(station.name)}, ${JSON.stringify(station.url_stream)})'>[ + Agregar ]</button>`;
@@ -275,13 +255,11 @@ document.getElementById("search-input").addEventListener("input", e => {
     });
 });
 
-// Función para quitar desde el buscador
 window.removeFromSearch = function(url) {
     const index = favoriteStations.findIndex(s => s.url === url);
     if (index !== -1) {
         favoriteStations.splice(index, 1);
         
-        // Prevenir que la radio siga sonando si justo borramos la emisora activa de la lista
         if (currentIndex === index) { 
             stopRadio(); 
             currentIndex = -1; 
@@ -296,28 +274,23 @@ window.removeFromSearch = function(url) {
     }
 };
 
-// Función para pre-escuchar sin guardar
 window.previewFromSearch = function(name, url) {
-    currentIndex = -1; // Deseleccionamos cualquier radio de la lista principal
-    renderStations();  // Actualizamos la lista visual (para que se quite el resaltado azul)
+    currentIndex = -1; 
+    renderStations();  
     
     audioPlayer.src = url;
-    currentStationText.textContent = `${name} (Preview)`; // Le ponemos la etiqueta preview
+    currentStationText.textContent = `${name} (Preview)`;
     
-    playRadio(); // Ejecutamos la radio
+    playRadio(); 
 };
 
-// Función para guardar
 window.addFromSearch = function(name, url) {
     favoriteStations.push({ name: name, url: url, favorite: false });
     saveStations();
     renderStations();
-    document.getElementById("search-input").dispatchEvent(new Event('input')); // Refresca el botón
+    document.getElementById("search-input").dispatchEvent(new Event('input')); 
 };
 
-// ==========================================
-// IMPORTAR / EXPORTAR
-// ==========================================
 function exportStations() {
     const dataStr = JSON.stringify(favoriteStations, null, 2);
     const blob = new Blob([dataStr], { type: "application/json" });
@@ -353,9 +326,6 @@ function importStations(event) {
     event.target.value = '';
 }
 
-// ==========================================
-// UTILIDADES (Volumen y Tema)
-// ==========================================
 function loadVolume() {
     let savedVolume = localStorage.getItem('webradio_volume') || 0.5;
     audioPlayer.volume = savedVolume;
@@ -379,7 +349,6 @@ function changeTheme() {
     localStorage.setItem('webradio_theme', newTheme);
 }
 
-// Avanza al siguiente tema
 function nextTheme() {
     const select = document.getElementById("theme-select");
     if (select.selectedIndex < select.options.length - 1) {
@@ -390,7 +359,6 @@ function nextTheme() {
     changeTheme();
 }
 
-// Retrocede al tema anterior
 function prevTheme() {
     const select = document.getElementById("theme-select");
     if (select.selectedIndex > 0) {
