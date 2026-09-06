@@ -77,7 +77,7 @@ function renderStations() {
 
         let textSpan = document.createElement('span');
         textSpan.className = 'station-text';
-        textSpan.textContent = `${(index + 1).toString().padStart(2, '0')} - ${station.name}`;
+        textSpan.textContent = `${(index + 1).toString().padStart(2, '0')}. ${station.name}`;
         textSpan.onclick = () => selectStation(index);
 
         let actionDiv = document.createElement('div');

@@ -36,7 +36,7 @@
     </header>
 
     <div class="container">
-        <h1>[ Radio:~ ]# ./play.sh</h1>
+        <h1>~ HyRadio</h1>
         <p>Selecciona una emisora de la lista:</p>
 
         <ul class="station-list" id="station-list"></ul>
@@ -50,8 +50,7 @@
             <p>> Exportar / Importar emisoras </p>
             <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importStations(event)">
             <button class="main-btn" onclick="exportStations()">[ Exportar emisoras ]</button>
-            <button class="main-btn" onclick="document.getElementById('import-file').click()">[ Importar emisoras
-                ]</button>
+            <button class="main-btn" onclick="document.getElementById('import-file').click()">[ Importar emisoras ]</button>
         </div>
     </div>
 
@@ -59,7 +58,7 @@
         <div class="bottom-bar-content">
 
             <div class="theme-container" style="display: flex; align-items: center; gap: 10px;"> <button
-                    class="main-btn" onclick="prevTheme()" style="padding: 2px 8px;">[ &lt; ]</button>
+                    class="main-btn2" onclick="prevTheme()" style="padding: 2px 8px;">&lt;</button>
                 <select id="theme-select" class="theme-select" onchange="changeTheme()">
                     <optgroup label="Catppuccin">
                         <option value="mocha">Mocha</option>
@@ -94,7 +93,7 @@
                         <option value="synthwave">Synthwave '84</option>
                     </optgroup>
                 </select>
-                <button class="main-btn" onclick="nextTheme()" style="padding: 2px 8px;">[ &gt; ]</button>
+                <button class="main-btn2" onclick="nextTheme()" style="padding: 2px 8px;">&gt;</button>
             </div>
             <span class="separator">|</span>
             <div class="volume-container">
