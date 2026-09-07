@@ -368,3 +368,56 @@ function prevTheme() {
     }
     changeTheme();
 }
+
+window.buscarRadiosAlAzar = function() {
+    const container = document.getElementById("search-results");
+    
+    if (allStations.length === 0) {
+        container.innerHTML = "> [ERROR] La base de datos local aún no ha cargado.";
+        return;
+    }
+
+    container.innerHTML = "> Buscando frecuencias estáticas...";
+
+    // 1. Descartamos los formatos no soportados (igual que en tu buscador)
+    const extensionesInvalidas = ['.pls', '.m3u', '.asx'];
+    const validStations = allStations.filter(s => {
+        const url = (s.url_stream || "").toLowerCase();
+        return !extensionesInvalidas.some(ext => url.endsWith(ext));
+    });
+
+    // 2. Mezclamos la lista válida y tomamos solo 25
+    const mezcladas = [...validStations].sort(() => 0.5 - Math.random());
+    const resultados = mezcladas.slice(0, 25);
+
+    // 3. Renderizamos usando exactamente tu misma lógica de diseño
+    container.innerHTML = "";
+    resultados.forEach(station => {
+        const exists = favoriteStations.some(f => f.url === station.url_stream);
+        
+        const div = document.createElement("div");
+        div.style.display = "flex";
+        div.style.justifyContent = "space-between";
+        div.style.padding = "5px 0";
+        div.style.borderBottom = "1px dashed var(--surface2)";
+        div.style.alignItems = "center";
+        
+        let actionButton = exists 
+            ? `<button class="action-btn" style="color: var(--red)" onclick='removeFromSearch(${JSON.stringify(station.url_stream)})'>[&nbsp;- Quitar&nbsp; ]</button>`
+            : `<button class="action-btn" style="color: var(--green)" onclick='addFromSearch(${JSON.stringify(station.name)}, ${JSON.stringify(station.url_stream)})'>[ + Agregar ]</button>`;
+
+        div.innerHTML = `
+            <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; padding-right: 15px;" title="${station.name}">
+                ${station.name} <em>(${station.iso_3166_1 || '??'})</em>
+            </span>
+            <div style="display: flex; gap: 10px; flex-shrink: 0;">
+                <button class="action-btn" style="color: var(--blue)" 
+                        onclick='previewFromSearch(${JSON.stringify(station.name)}, ${JSON.stringify(station.url_stream)})'>
+                    [ Escuchar ]
+                </button>
+                ${actionButton}
+            </div>
+        `;
+        container.appendChild(div);
+    });
+};

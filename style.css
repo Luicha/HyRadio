@@ -380,6 +380,49 @@ h1 { border-bottom: 2px dashed var(--mauve); padding-bottom: 10px; color: var(--
     color: var(--crust);
 }
 
+.action-buttons button {
+  background: transparent;
+  border: none;
+  color: inherit; /* Hereda el color ámbar/verde de tu tema actual */
+  font-family: inherit; /* Mantiene la tipografía monospace */
+  font-size: 1rem; 
+  cursor: pointer;
+  margin-left: 15px;
+  padding: 0;
+}
+
+.action-buttons button:hover {
+  text-shadow: 0 0 8px currentColor;
+  color: #ffffff; /* Efecto de brillo al pasar el mouse */
+}
+
+.header-lista {
+    display: flex;
+    justify-content: space-between; /* Empuja el párrafo a la izquierda y los botones a la derecha */
+    align-items: center; /* Asegura que queden alineados horizontalmente al centro */
+    margin-bottom: 15px; /* Da un respiro antes de que empiece la lista de radios */
+}
+
+.header-lista p {
+    margin: 0; /* Elimina el margen por defecto de <p> que suele desalinear las cajas */
+}
+
+.action-buttons {
+    display: flex;
+    gap: 2px; /* Define el espacio de separación entre los botones [ ↑ ] y [ ↓ ] */
+}
+
+.header-buscar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* Separación con el input de búsqueda */
+}
+
+.header-buscar p {
+    margin: 0;
+}
+
 @media (max-width: 768px) { .separator { display: none; } }
 
 select.theme-select {
