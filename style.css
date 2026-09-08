@@ -423,6 +423,24 @@ h1 { border-bottom: 2px dashed var(--mauve); padding-bottom: 10px; color: var(--
     margin: 0;
 }
 
+/* El diseño base del badge */
+.badge-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 12px;
+    cursor: pointer;
+    border: 1px solid var(--surface2);
+    transition: all 0.2s ease;
+}
+
+/* Los 4 estados posibles */
+.badge-none { background-color: transparent; }
+.badge-red { background-color: #ff5555; border-color: #ff5555; box-shadow: 0 0 8px #ff5555; }
+.badge-blue { background-color: #8be9fd; border-color: #8be9fd; box-shadow: 0 0 8px #8be9fd; }
+.badge-yellow { background-color: #f1fa8c; border-color: #f1fa8c; box-shadow: 0 0 8px #f1fa8c; }
+
 @media (max-width: 768px) { .separator { display: none; } }
 
 select.theme-select {

@@ -11,6 +11,23 @@ const defaultStations = [
 let favoriteStations = [];
 let currentIndex = -1;
 let allStations = []; // Json
+let draggedIndex = null; // Necesario para el Drag & Drop
+
+function reorderStations(fromIndex, toIndex) {
+    const movedItem = favoriteStations.splice(fromIndex, 1)[0];
+    favoriteStations.splice(toIndex, 0, movedItem);
+
+    if (currentIndex === fromIndex) {
+        currentIndex = toIndex;
+    } else if (currentIndex > fromIndex && currentIndex <= toIndex) {
+        currentIndex--;
+    } else if (currentIndex < fromIndex && currentIndex >= toIndex) {
+        currentIndex++;
+    }
+
+    saveStations();
+    renderStations();
+}
 
 // DOM
 const listElement = document.getElementById('station-list');
@@ -57,23 +74,58 @@ function saveStations() {
 function renderStations() {
     listElement.innerHTML = '';
 
-    // Orden Primero las favoritas, pero guardamos el índice original para no romper la reproducción
-    const displayOrder = favoriteStations.map((station, index) => {
-        return { ...station, originalIndex: index };
-    }).sort((a, b) => (b.favorite === true) - (a.favorite === true));
-
-    displayOrder.forEach((station) => {
-        const index = station.originalIndex;
+    // Iteramos DIRECTAMENTE sobre favoriteStations para respetar tu orden
+    favoriteStations.forEach((station, index) => {
+        const stationColor = station.color || 'none';
 
         let li = document.createElement('li');
         li.className = 'station-item';
-        if (index === currentIndex) li.classList.add('active-station');
-        if (station.favorite) li.classList.add('is-favorite');
+        li.draggable = true; // Habilitamos el arrastre
 
-        let favSpan = document.createElement('span');
-        favSpan.className = `fav-btn ${station.favorite ? 'active' : ''}`;
-        favSpan.textContent = station.favorite ? '♥' : '♡';
-        favSpan.onclick = (e) => { e.stopPropagation(); toggleFavorite(index); };
+        if (index === currentIndex) li.classList.add('active-station');
+
+        // --- EVENTOS DRAG & DROP ---
+        li.addEventListener('dragstart', (e) => {
+            draggedIndex = index;
+            e.dataTransfer.effectAllowed = 'move';
+            li.classList.add('is-dragging');
+        });
+
+        li.addEventListener('dragover', (e) => {
+            if (draggedIndex !== null) {
+                const draggedColor = favoriteStations[draggedIndex].color || 'none';
+                // Solo permite soltar si son de la misma categoría de color
+                if (draggedColor === stationColor) {
+                    e.preventDefault(); 
+                    e.dataTransfer.dropEffect = 'move';
+                    li.style.borderTop = "2px dashed var(--blue)";
+                }
+            }
+        });
+
+        li.addEventListener('dragleave', () => {
+            li.style.borderTop = "";
+        });
+
+        li.addEventListener('drop', (e) => {
+            e.preventDefault();
+            li.style.borderTop = "";
+            const targetIndex = index;
+
+            if (draggedIndex !== null && draggedIndex !== targetIndex) {
+                reorderStations(draggedIndex, targetIndex);
+            }
+        });
+
+        li.addEventListener('dragend', () => {
+            draggedIndex = null;
+            li.classList.remove('is-dragging');
+        });
+        
+        // Badge
+        let badgeSpan = document.createElement('span');
+        badgeSpan.className = `badge-color badge-${stationColor}`;
+        badgeSpan.onclick = (e) => { e.stopPropagation(); toggleBadge(index, badgeSpan); };
 
         let textSpan = document.createElement('span');
         textSpan.className = 'station-text';
@@ -97,7 +149,7 @@ function renderStations() {
         actionDiv.appendChild(editBtn);
         actionDiv.appendChild(deleteBtn);
 
-        li.appendChild(favSpan);
+        li.appendChild(badgeSpan);
         li.appendChild(textSpan);
         li.appendChild(actionDiv);
 
@@ -167,11 +219,7 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
-function toggleFavorite(index) {
-    favoriteStations[index].favorite = !favoriteStations[index].favorite;
-    saveStations();
-    renderStations();
-}
+
 
 function editStation(index) {
     const station = favoriteStations[index];
@@ -421,3 +469,41 @@ window.buscarRadiosAlAzar = function() {
         container.appendChild(div);
     });
 };
+
+let sortTimeout = null;
+
+function toggleBadge(index, badgeElement) {
+    const cycle = ['none', 'red', 'blue', 'yellow'];
+    const station = favoriteStations[index];
+    const currentColor = station.color || 'none';
+    
+    const nextColorIndex = (cycle.indexOf(currentColor) + 1) % cycle.length;
+    const newColor = cycle[nextColorIndex];
+    
+    station.color = newColor;
+    saveStations();
+
+    badgeElement.className = `badge-color badge-${newColor}`;
+
+    clearTimeout(sortTimeout);
+
+    sortTimeout = setTimeout(() => {
+        const currentPlayingUrl = currentIndex !== -1 ? favoriteStations[currentIndex].url : null;
+        
+    
+        const priority = { 'red': 1, 'blue': 2, 'yellow': 3, 'none': 4 };
+        favoriteStations.sort((a, b) => {
+            const pA = priority[a.color || 'none'];
+            const pB = priority[b.color || 'none'];
+            return pA - pB;
+        });
+        
+        if (currentPlayingUrl) {
+            currentIndex = favoriteStations.findIndex(s => s.url === currentPlayingUrl);
+        }
+
+        saveStations();
+        renderStations(); 
+        
+    }, 1500); 
+}
