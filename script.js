@@ -57,7 +57,7 @@ async function initApp() {
     }
 
     // Carga del tema elegido
-    let savedTheme = localStorage.getItem('webradio_theme') || 'mocha';
+    let savedTheme = localStorage.getItem('webradio_theme') || 'rose-gold';
     document.documentElement.setAttribute('data-theme', savedTheme);
     if (themeSelect) themeSelect.value = savedTheme;
 

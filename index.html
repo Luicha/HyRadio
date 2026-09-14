@@ -7,7 +7,7 @@
     <title>HyRadio</title>
     <script>
         (() => {
-            const savedTheme = localStorage.getItem("theme") || "mocha";
+            const savedTheme = localStorage.getItem("theme") || "rose-gold";
             document.documentElement.setAttribute("data-theme", savedTheme);
         })();
     </script>
@@ -32,39 +32,41 @@
                 <span class="separator">|</span>
                 <span>> SUENA: <span id="current-station" class="stream-text">Ninguna radio seleccionada</span></span>
             </div>
-            
+
         </div>
-     
+
     </header>
 
     <div class="container">
-    <h1>~ HyRadio</h1>
-    
-    <!-- Nuevo contenedor flex para alinear a los extremos -->
-    <div class="header-lista">
-        <p>Selecciona una emisora de la lista:</p>
-        
-        <!-- Agrupamos los botones para que permanezcan juntos -->
-        <div class="action-buttons">
-            <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importStations(event)">
-            <button class="main-btn" title="Exportar emisoras" onclick="exportStations()">[↑]</button>
-            <button class="main-btn" title="Importar emisoras" onclick="document.getElementById('import-file').click()">[↓]</button>
+        <h1>~ HyRadio</h1>
+
+        <!-- Nuevo contenedor flex para alinear a los extremos -->
+        <div class="header-lista">
+            <p>Selecciona una emisora de la lista:</p>
+
+            <!-- Agrupamos los botones para que permanezcan juntos -->
+            <div class="action-buttons">
+                <input type="file" id="import-file" style="display: none;" accept=".json"
+                    onchange="importStations(event)">
+                <button class="main-btn" title="Exportar emisoras" onclick="exportStations()">[↑]</button>
+                <button class="main-btn" title="Importar emisoras"
+                    onclick="document.getElementById('import-file').click()">[↓]</button>
+            </div>
+        </div>
+
+        <ul class="station-list" id="station-list"></ul>
+
+        <div class="console-box">
+            <!-- Contenedor flex para alinear título y botón -->
+            <div class="header-buscar">
+                <p>Buscar radios del mundo</p>
+                <button class="main-btn" onclick="buscarRadiosAlAzar()" title="Descubrir 25 radios al azar">[?]</button>
+            </div>
+
+            <input type="text" id="search-input" placeholder="Buscar por nombre o país...">
+            <div id="search-results"></div>
         </div>
     </div>
-
-    <ul class="station-list" id="station-list"></ul>
-    
-    <div class="console-box">
-    <!-- Contenedor flex para alinear título y botón -->
-    <div class="header-buscar">
-        <p>Buscar radios del mundo</p>
-        <button class="main-btn" onclick="buscarRadiosAlAzar()" title="Descubrir 25 radios al azar">[?]</button>
-    </div>
-    
-    <input type="text" id="search-input" placeholder="Buscar por nombre o país...">
-    <div id="search-results"></div>
-</div>
-</div>
 
     <footer class="bottom-bar">
         <div class="bottom-bar-content">
