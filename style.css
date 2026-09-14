@@ -455,45 +455,76 @@ select.theme-select {
     outline: none;
 }
 
-/* --- ADAPTACIÓN RESPONSIVA PARA MÓVILES --- */
+/* --- ADAPTACIÓN RESPONSIVA OPTIMIZADA PARA MÓVILES --- */
 @media (max-width: 768px) {
-    /* Permitir que la barra inferior apile los controles cómodamente */
+    /* 1. Usamos una grilla de 2 columnas para organizar la barra inferior en 2 filas limpias */
     .bottom-bar-content {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
-        padding: 10px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 8px;
+        align-items: center;
     }
 
-    /* Hacer que el selector de temas ocupe todo el ancho disponible */
+    /* Ocultamos el separador vertical en pantallas chicas */
+    .bottom-bar-content .separator {
+        display: none;
+    }
+
+    /* 2. Fila 1: Selector de temas y Volumen lado a lado */
     .theme-container {
-        justify-content: space-between;
+        grid-column: 1;
         width: 100%;
+        justify-content: space-between;
+        padding: 0 6px;
     }
     
     select.theme-select {
         flex-grow: 1;
-        text-align: center;
+        max-width: 90px;
+        font-size: 0.8rem;
     }
 
-    /* Alinear el control de volumen y los botones de reproducción de forma fluida */
     .volume-container {
+        grid-column: 2;
         width: 100%;
         justify-content: space-between;
+        padding: 0 6px;
     }
 
-    /* Asegurar que los botones principales no se desborden */
+    input[type="range"] {
+        width: 55px;
+    }
+
+    .vol-text {
+        font-size: 0.75rem;
+        min-width: 35px;
+    }
+
+    /* 3. Fila 2: Botones Play y Stop compartiendo el ancho de forma simétrica */
+    #play-btn {
+        grid-column: 1;
+        width: 100%;
+    }
+
+    #stop-btn {
+        grid-column: 2;
+        width: 100%;
+    }
+
+    /* Forzamos que los botones de la barra inferior se adapten al espacio de la grilla */
     .bottom-bar-content .main-btn, 
     .bottom-bar-content .main-btn2 {
         width: 100%;
+        height: 34px;
+        font-size: 0.8rem;
     }
 
-    /* Ajustar el espaciado general del contenedor para pantallas angostas */
+    /* 4. Ajustes generales de espaciado y prevención de saltos de scroll */
     .container {
         padding: 10px;
     }
 
-    /* Evitar que el texto de la barra superior corte información clave */
     .top-bar-content {
         font-size: 0.85em;
         white-space: normal;
