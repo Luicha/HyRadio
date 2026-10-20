@@ -11,23 +11,8 @@ const defaultStations = [
 let favoriteStations = [];
 let currentIndex = -1;
 let allStations = []; // Json
-let draggedIndex = null; // Necesario para el Drag & Drop
-
-function reorderStations(fromIndex, toIndex) {
-    const movedItem = favoriteStations.splice(fromIndex, 1)[0];
-    favoriteStations.splice(toIndex, 0, movedItem);
-
-    if (currentIndex === fromIndex) {
-        currentIndex = toIndex;
-    } else if (currentIndex > fromIndex && currentIndex <= toIndex) {
-        currentIndex--;
-    } else if (currentIndex < fromIndex && currentIndex >= toIndex) {
-        currentIndex++;
-    }
-
-    saveStations();
-    renderStations();
-}
+let draggedIndex = null; // Drag & Drop
+let sortTimeout = null;
 
 // DOM
 const listElement = document.getElementById('station-list');
@@ -37,6 +22,8 @@ const currentStationText = document.getElementById('current-station');
 const volumeSlider = document.getElementById('volume-slider');
 const volumeText = document.getElementById('volume-text');
 const themeSelect = document.getElementById('theme-select');
+const streamBadge = document.getElementById('stream-badge');
+const streamStatusText = document.getElementById('stream-status-text');
 
 async function initApp() {
     // Carga de favoritos o defaults
@@ -71,20 +58,35 @@ function saveStations() {
     localStorage.setItem('favorites', JSON.stringify(favoriteStations));
 }
 
+function reorderStations(fromIndex, toIndex) {
+    const movedItem = favoriteStations.splice(fromIndex, 1)[0];
+    favoriteStations.splice(toIndex, 0, movedItem);
+
+    if (currentIndex === fromIndex) {
+        currentIndex = toIndex;
+    } else if (currentIndex > fromIndex && currentIndex <= toIndex) {
+        currentIndex--;
+    } else if (currentIndex < fromIndex && currentIndex >= toIndex) {
+        currentIndex++;
+    }
+
+    saveStations();
+    renderStations();
+}
+
 function renderStations() {
     listElement.innerHTML = '';
 
-    // Iteramos DIRECTAMENTE sobre favoriteStations para respetar tu orden
     favoriteStations.forEach((station, index) => {
         const stationColor = station.color || 'none';
 
         let li = document.createElement('li');
         li.className = 'station-item';
-        li.draggable = true; // Habilitamos el arrastre
+        li.draggable = true;
 
         if (index === currentIndex) li.classList.add('active-station');
 
-        // --- EVENTOS DRAG & DROP ---
+        // Drag & Drop
         li.addEventListener('dragstart', (e) => {
             draggedIndex = index;
             e.dataTransfer.effectAllowed = 'move';
@@ -94,7 +96,6 @@ function renderStations() {
         li.addEventListener('dragover', (e) => {
             if (draggedIndex !== null) {
                 const draggedColor = favoriteStations[draggedIndex].color || 'none';
-                // Solo permite soltar si son de la misma categoría de color
                 if (draggedColor === stationColor) {
                     e.preventDefault(); 
                     e.dataTransfer.dropEffect = 'move';
@@ -161,14 +162,12 @@ function selectStation(index) {
     currentIndex = index;
     const station = favoriteStations[index];
     
-    // Stop antes de cambiar la radio
     audioPlayer.pause();
     audioPlayer.src = station.url;
     currentStationText.textContent = station.name;
     
     renderStations();
     
-    // Delay para que el navegador procese el cambio de URL
     setTimeout(() => {
         playRadio();
     }, 100);
@@ -180,26 +179,78 @@ function playRadio() {
         return;
     }
 
-    statusText.textContent = "Conectando...";
-    statusText.style.color = "var(--blue)";
+    setStreamState('connecting');
 
-    audioPlayer.play().then(() => {
-        statusText.textContent = "En Línea";
-        statusText.style.color = "var(--green)";
-    }).catch(err => {
-        statusText.textContent = "Error";
-        statusText.style.color = "var(--red)";
+    audioPlayer.play().catch(err => {
+        setStreamState('error');
         console.error("Fallo al reproducir:", err);
     });
     
-    document.getElementById("stop-btn").classList.add("is-playing");
+    const stopBtn = document.getElementById("stop-btn");
+    if (stopBtn) stopBtn.classList.add("is-playing");
 }
 
 function stopRadio() {
     audioPlayer.pause();
-    statusText.textContent = "Detenido";
-    statusText.style.color = "var(--subtext0)";
-    document.getElementById("stop-btn").classList.remove("is-playing");
+    setStreamState('stopped');
+    const stopBtn = document.getElementById("stop-btn");
+    if (stopBtn) stopBtn.classList.remove("is-playing");
+}
+
+// Sincronización de estados (pastilla izquierda y badge derecho)
+function setStreamState(state) {
+    if (streamBadge) {
+        streamBadge.classList.remove('state-stopped', 'state-connecting', 'state-online', 'state-error');
+    }
+
+    switch (state) {
+        case 'connecting':
+            if (streamBadge) streamBadge.classList.add('state-connecting');
+            if (streamStatusText) streamStatusText.textContent = 'CONECTANDO...';
+            if (statusText) {
+                statusText.textContent = "Conectando...";
+                statusText.style.color = "var(--blue)";
+            }
+            break;
+
+        case 'online':
+            if (streamBadge) streamBadge.classList.add('state-online');
+            if (streamStatusText) streamStatusText.textContent = 'EN LÍNEA';
+            if (statusText) {
+                statusText.textContent = "En Línea";
+                statusText.style.color = "var(--green)";
+            }
+            break;
+
+        case 'error':
+            if (streamBadge) streamBadge.classList.add('state-error');
+            if (streamStatusText) streamStatusText.textContent = 'ERROR';
+            if (statusText) {
+                statusText.textContent = "Error";
+                statusText.style.color = "var(--red)";
+            }
+            break;
+
+        case 'stopped':
+        default:
+            if (streamBadge) streamBadge.classList.add('state-stopped');
+            if (streamStatusText) streamStatusText.textContent = 'DETENIDO';
+            if (statusText) {
+                statusText.textContent = "Detenido";
+                statusText.style.color = "var(--subtext0)";
+            }
+            break;
+    }
+}
+
+// Eventos nativos del reproductor
+if (audioPlayer) {
+    audioPlayer.addEventListener('loadstart', () => setStreamState('connecting'));
+    audioPlayer.addEventListener('waiting', () => setStreamState('connecting'));
+    audioPlayer.addEventListener('playing', () => setStreamState('online'));
+    audioPlayer.addEventListener('pause', () => setStreamState('stopped'));
+    audioPlayer.addEventListener('ended', () => setStreamState('stopped'));
+    audioPlayer.addEventListener('error', () => setStreamState('error'));
 }
 
 // Control para barra espaciadora
@@ -218,8 +269,6 @@ document.addEventListener('keydown', function (event) {
         }
     }
 });
-
-
 
 function editStation(index) {
     const station = favoriteStations[index];
@@ -244,64 +293,72 @@ function editStation(index) {
 function deleteStation(index) {
     if (confirm(`¿Eliminar [ ${favoriteStations[index].name} ]?`)) {
         favoriteStations.splice(index, 1);
-        if (currentIndex === index) { stopRadio(); currentIndex = -1; currentStationText.textContent = "Ninguno"; } 
-        else if (currentIndex > index) { currentIndex--; }
+        if (currentIndex === index) { 
+            stopRadio(); 
+            currentIndex = -1; 
+            currentStationText.textContent = "Ninguno"; 
+        } else if (currentIndex > index) { 
+            currentIndex--; 
+        }
         saveStations();
         renderStations();
     }
 }
 
-document.getElementById("search-input").addEventListener("input", e => {
-    const query = e.target.value.toLowerCase();
-    const container = document.getElementById("search-results");
-    
-    if (query.length < 3) {
+// Buscador
+const searchInput = document.getElementById("search-input");
+if (searchInput) {
+    searchInput.addEventListener("input", e => {
+        const query = e.target.value.toLowerCase();
+        const container = document.getElementById("search-results");
+        
+        if (query.length < 3) {
+            container.innerHTML = "";
+            return;
+        }
+
+        const extensionesInvalidas = ['.pls', '.m3u', '.asx'];
+
+        const results = allStations.filter(s => {
+            const url = s.url_stream.toLowerCase();
+            const esInvalida = extensionesInvalidas.some(ext => url.endsWith(ext));
+            const coincideBusqueda = s.name.toLowerCase().includes(query) || 
+                                     (s.iso_3166_1 && s.iso_3166_1.toLowerCase().includes(query));
+
+            return !esInvalida && coincideBusqueda;
+        }).slice(0, 15);
+
         container.innerHTML = "";
-        return;
-    }
+        results.forEach(station => {
+            const exists = favoriteStations.some(f => f.url === station.url_stream);
+            
+            const div = document.createElement("div");
+            div.style.display = "flex";
+            div.style.justifyContent = "space-between";
+            div.style.padding = "5px 0";
+            div.style.borderBottom = "1px dashed var(--surface2)";
+            div.style.alignItems = "center";
+            
+            let actionButton = exists 
+                ? `<button class="action-btn" style="color: var(--red)" onclick='removeFromSearch(${JSON.stringify(station.url_stream)})'>[&nbsp;- Quitar&nbsp; ]</button>`
+                : `<button class="action-btn" style="color: var(--green)" onclick='addFromSearch(${JSON.stringify(station.name)}, ${JSON.stringify(station.url_stream)})'>[ + Agregar ]</button>`;
 
-    // Lista negra (HTML5 no lee playlists)
-    const extensionesInvalidas = ['.pls', '.m3u', '.asx'];
-
-    const results = allStations.filter(s => {
-        const url = s.url_stream.toLowerCase();
-        const esInvalida = extensionesInvalidas.some(ext => url.endsWith(ext));
-        const coincideBusqueda = s.name.toLowerCase().includes(query) || 
-                                 (s.iso_3166_1 && s.iso_3166_1.toLowerCase().includes(query));
-
-        return !esInvalida && coincideBusqueda;
-    }).slice(0, 15);
-
-    container.innerHTML = "";
-    results.forEach(station => {
-        const exists = favoriteStations.some(f => f.url === station.url_stream);
-        
-        const div = document.createElement("div");
-        div.style.display = "flex";
-        div.style.justifyContent = "space-between";
-        div.style.padding = "5px 0";
-        div.style.borderBottom = "1px dashed var(--surface2)";
-        div.style.alignItems = "center";
-        
-        let actionButton = exists 
-            ? `<button class="action-btn" style="color: var(--red)" onclick='removeFromSearch(${JSON.stringify(station.url_stream)})'>[&nbsp;- Quitar&nbsp; ]</button>`
-            : `<button class="action-btn" style="color: var(--green)" onclick='addFromSearch(${JSON.stringify(station.name)}, ${JSON.stringify(station.url_stream)})'>[ + Agregar ]</button>`;
-
-        div.innerHTML = `
-            <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; padding-right: 15px;" title="${station.name}">
-                ${station.name} <em>(${station.iso_3166_1 || '??'})</em>
-            </span>
-            <div style="display: flex; gap: 10px; flex-shrink: 0;">
-                <button class="action-btn" style="color: var(--blue)" 
-                        onclick='previewFromSearch(${JSON.stringify(station.name)}, ${JSON.stringify(station.url_stream)})'>
-                    [ Escuchar ]
-                </button>
-                ${actionButton}
-            </div>
-        `;
-        container.appendChild(div);
+            div.innerHTML = `
+                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; padding-right: 15px;" title="${station.name}">
+                    ${station.name} <em>(${station.iso_3166_1 || '??'})</em>
+                </span>
+                <div style="display: flex; gap: 10px; flex-shrink: 0;">
+                    <button class="action-btn" style="color: var(--blue)" 
+                            onclick='previewFromSearch(${JSON.stringify(station.name)}, ${JSON.stringify(station.url_stream)})'>
+                        [ Escuchar ]
+                    </button>
+                    ${actionButton}
+                </div>
+            `;
+            container.appendChild(div);
+        });
     });
-});
+}
 
 window.removeFromSearch = function(url) {
     const index = favoriteStations.findIndex(s => s.url === url);
@@ -318,7 +375,8 @@ window.removeFromSearch = function(url) {
 
         saveStations();
         renderStations();
-        document.getElementById("search-input").dispatchEvent(new Event('input')); // Refresca el botón de nuevo a [+ Agregar]
+        const input = document.getElementById("search-input");
+        if (input) input.dispatchEvent(new Event('input'));
     }
 };
 
@@ -336,7 +394,8 @@ window.addFromSearch = function(name, url) {
     favoriteStations.push({ name: name, url: url, favorite: false });
     saveStations();
     renderStations();
-    document.getElementById("search-input").dispatchEvent(new Event('input')); 
+    const input = document.getElementById("search-input");
+    if (input) input.dispatchEvent(new Event('input'));
 };
 
 function exportStations() {
@@ -377,18 +436,24 @@ function importStations(event) {
 function loadVolume() {
     let savedVolume = localStorage.getItem('webradio_volume') || 0.5;
     audioPlayer.volume = savedVolume;
-    volumeSlider.value = savedVolume;
-    updateVolumeText();
+    if (volumeSlider) {
+        volumeSlider.value = savedVolume;
+        updateVolumeText();
+    }
 }
 
-volumeSlider.addEventListener('input', (e) => {
-    audioPlayer.volume = e.target.value;
-    localStorage.setItem('webradio_volume', e.target.value);
-    updateVolumeText();
-});
+if (volumeSlider) {
+    volumeSlider.addEventListener('input', (e) => {
+        audioPlayer.volume = e.target.value;
+        localStorage.setItem('webradio_volume', e.target.value);
+        updateVolumeText();
+    });
+}
 
 function updateVolumeText() {
-    volumeText.textContent = `[ ${Math.round(volumeSlider.value * 100).toString().padStart(3, ' ')}% ]`;
+    if (volumeText && volumeSlider) {
+        volumeText.textContent = `[ ${Math.round(volumeSlider.value * 100).toString().padStart(3, ' ')}% ]`;
+    }
 }
 
 function changeTheme() {
@@ -427,18 +492,15 @@ window.buscarRadiosAlAzar = function() {
 
     container.innerHTML = "> Buscando frecuencias estáticas...";
 
-    // 1. Descartamos los formatos no soportados (igual que en tu buscador)
     const extensionesInvalidas = ['.pls', '.m3u', '.asx'];
     const validStations = allStations.filter(s => {
         const url = (s.url_stream || "").toLowerCase();
         return !extensionesInvalidas.some(ext => url.endsWith(ext));
     });
 
-    // 2. Mezclamos la lista válida y tomamos solo 25
     const mezcladas = [...validStations].sort(() => 0.5 - Math.random());
     const resultados = mezcladas.slice(0, 25);
 
-    // 3. Renderizamos usando exactamente tu misma lógica de diseño
     container.innerHTML = "";
     resultados.forEach(station => {
         const exists = favoriteStations.some(f => f.url === station.url_stream);
@@ -470,8 +532,6 @@ window.buscarRadiosAlAzar = function() {
     });
 };
 
-let sortTimeout = null;
-
 function toggleBadge(index, badgeElement) {
     const cycle = ['none', 'red', 'blue', 'yellow'];
     const station = favoriteStations[index];
@@ -490,7 +550,6 @@ function toggleBadge(index, badgeElement) {
     sortTimeout = setTimeout(() => {
         const currentPlayingUrl = currentIndex !== -1 ? favoriteStations[currentIndex].url : null;
         
-    
         const priority = { 'red': 1, 'blue': 2, 'yellow': 3, 'none': 4 };
         favoriteStations.sort((a, b) => {
             const pA = priority[a.color || 'none'];
@@ -504,6 +563,224 @@ function toggleBadge(index, badgeElement) {
 
         saveStations();
         renderStations(); 
-        
     }, 1500); 
 }
+
+// ==========================================
+// SECCIÓN: TEMPORIZADOR POMODORO & AUDIO DUCKING
+// ==========================================
+
+// 1. Archivo de audio para la campana/alarma (ajustá la ruta si difiere)
+const alertAudio = new Audio('./assets/sounds/notificacion.mp3');
+alertAudio.preload = 'auto';
+
+// 2. Variables de estado del temporizador
+let workTime = 20 * 60; // 20 min por defecto
+let breakTime = 5 * 60;  // 5 min de descanso
+let timeLeft = workTime;
+let isRunning = false;
+let isBreak = false;
+let endTime = null;
+let timerId = null;
+
+// 3. Elementos del DOM del Pomodoro
+const pomoDisplayTime = document.getElementById('pomo-time');
+const pomoDisplayMode = document.getElementById('pomo-mode');
+const pomoToggleBtn = document.getElementById('pomo-toggle');
+const pomoResetBtn = document.getElementById('pomo-reset');
+const pomoPresetBtns = document.querySelectorAll('.pomo-preset');
+const pomoContainer = document.getElementById('pomodoro');
+const pomoMinBtn = document.getElementById('pomo-min-btn');
+
+// 4. Funciones de Audio Ducking (atenuación y restauración de volumen)
+function fadeVolume(audioEl, targetVolume, duration = 400) {
+    if (!audioEl) return Promise.resolve();
+
+    return new Promise((resolve) => {
+        const startVolume = audioEl.volume;
+        const volumeDelta = targetVolume - startVolume;
+        const startTime = performance.now();
+
+        function step(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            audioEl.volume = Math.max(0, Math.min(1, startVolume + volumeDelta * progress));
+
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            } else {
+                audioEl.volume = targetVolume;
+                resolve();
+            }
+        }
+
+        requestAnimationFrame(step);
+    });
+}
+
+async function triggerNotificationWithDucking() {
+    // Si la radio está apagada o no hay audio, solo suena la campana
+    if (!audioPlayer || audioPlayer.paused) {
+        alertAudio.currentTime = 0;
+        alertAudio.play().catch(() => {});
+        return;
+    }
+
+    const originalVolume = audioPlayer.volume;
+    const duckedVolume = Math.max(0.08, originalVolume * 0.25); // Baja al 25%
+
+    // Atenúa la radio en 300 ms
+    await fadeVolume(audioPlayer, duckedVolume, 300);
+
+    // Reproduce la notificación
+    alertAudio.currentTime = 0;
+    try {
+        await alertAudio.play();
+    } catch (err) {
+        console.warn("Fallo al reproducir audio de notificación:", err);
+    }
+
+    // Cuando termina el MP3, restaura el volumen de la radio gradualmente
+    alertAudio.onended = () => {
+        fadeVolume(audioPlayer, originalVolume, 500);
+    };
+}
+
+// 5. Render y lógica de cuenta regresiva
+function updatePomoDisplay() {
+    if (!pomoDisplayTime) return;
+
+    const mins = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+    const secs = (timeLeft % 60).toString().padStart(2, '0');
+    pomoDisplayTime.textContent = `${mins}:${secs}`;
+
+    if (isRunning) {
+        document.title = `(${mins}:${secs}) HyRadio`;
+    }
+}
+
+function pomoTick() {
+    const now = Date.now();
+    const remaining = Math.round((endTime - now) / 1000);
+
+    if (remaining <= 0) {
+        triggerNotificationWithDucking();
+
+        // Alterna entre foco y descanso
+        isBreak = !isBreak;
+        timeLeft = isBreak ? breakTime : workTime;
+
+        if (pomoDisplayMode) {
+            pomoDisplayMode.textContent = isBreak ? 'BREAK' : 'FOCUS';
+            pomoDisplayMode.style.color = isBreak ? '#5cff8a' : '#ff5c5c';
+        }
+
+        endTime = Date.now() + timeLeft * 1000;
+    } else {
+        timeLeft = remaining;
+    }
+
+    updatePomoDisplay();
+}
+
+// 6. Listeners de control (Play/Pausa, Reset, Presets)
+if (pomoToggleBtn) {
+    pomoToggleBtn.addEventListener('click', () => {
+        if (isRunning) {
+            clearInterval(timerId);
+            isRunning = false;
+            pomoToggleBtn.textContent = '▶';
+            pomoContainer.classList.remove('is-running'); // Vuelve al rojo
+        } else {
+            isRunning = true;
+            endTime = Date.now() + timeLeft * 1000;
+            timerId = setInterval(pomoTick, 250);
+            pomoToggleBtn.textContent = '❚❚';
+            pomoContainer.classList.add('is-running'); // Pasa al azul GitHub
+        }
+    });
+}
+
+if (pomoResetBtn) {
+    pomoResetBtn.addEventListener('click', () => {
+        clearInterval(timerId);
+        isRunning = false;
+        isBreak = false;
+        timeLeft = workTime;
+
+        // Quita los estados activos
+        pomoContainer.classList.remove('is-running', 'is-break');
+
+        if (pomoDisplayMode) {
+            pomoDisplayMode.textContent = 'FOCUS';
+        }
+
+        if (pomoToggleBtn) pomoToggleBtn.textContent = '▶';
+        document.title = 'HyRadio';
+        updatePomoDisplay();
+    });
+}
+
+// Selección de botones de tiempo (20m, 25m, 30m, 40m)
+if (pomoPresetBtns.length > 0) {
+    pomoPresetBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            pomoPresetBtns.forEach(b => b.classList.remove('is-active'));
+            btn.classList.add('is-active');
+
+            const mins = parseInt(btn.dataset.mins, 10);
+            workTime = mins * 60;
+
+            if (!isBreak) {
+                clearInterval(timerId);
+                isRunning = false;
+                pomoContainer.classList.remove('is-running');
+                if (pomoToggleBtn) pomoToggleBtn.textContent = '▶';
+                timeLeft = workTime;
+                updatePomoDisplay();
+            }
+        });
+    });
+}
+
+// Botón colapsar / minimizar (si existe en el HTML)
+if (pomoMinBtn && pomoContainer) {
+    pomoMinBtn.addEventListener('click', () => {
+        pomoContainer.classList.toggle('is-minimized');
+        pomoMinBtn.textContent = pomoContainer.classList.contains('is-minimized') ? '+' : '–';
+    });
+}
+
+function pomoTick() {
+    const now = Date.now();
+    const remaining = Math.round((endTime - now) / 1000);
+
+    if (remaining <= 0) {
+        triggerNotificationWithDucking();
+
+        isBreak = !isBreak;
+        timeLeft = isBreak ? breakTime : workTime;
+
+        if (pomoDisplayMode) {
+            pomoDisplayMode.textContent = isBreak ? 'BREAK' : 'FOCUS';
+        }
+
+        // Alterna la clase de descanso
+        if (isBreak) {
+            pomoContainer.classList.add('is-break');
+        } else {
+            pomoContainer.classList.remove('is-break');
+        }
+
+        endTime = Date.now() + timeLeft * 1000;
+    } else {
+        timeLeft = remaining;
+    }
+
+    updatePomoDisplay();
+}
+
+// Inicialización de pantalla al cargar
+updatePomoDisplay();
+

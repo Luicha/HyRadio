@@ -21,26 +21,46 @@
     <meta name="mobile-web-app-capable" content="yes">
 
     <meta name="theme-color" content="#1e1e2e">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
 
-    <header class="top-bar">
-        <div class="top-bar-content">
-            <div class="top-row">
-                <span>> ESTADO: <span id="status" class="status-text">Detenido</span></span>
-                <span class="separator">|</span>
-                <span>> SUENA: <span id="current-station" class="stream-text">Ninguna radio seleccionada</span></span>
-            </div>
+    <header class="gh-navbar">
+        <!-- Izquierda: Marca, separador e info de estación -->
+        <div class="gh-nav-left">
+            <a href="/" class="gh-brand">
+                <span class="gh-brand-name">Hy<strong>Radio</strong></span>
+            </a>
 
+            <div class="gh-divider"></div>
+
+            <!-- Info de reproducción integrada -->
+            <div class="gh-station-info">
+                <div class="gh-info-pill station-pill">
+                    <span class="gh-info-prefix">></span>
+                    <span class="gh-info-label">SUENA:</span>
+                    <span id="current-station" class="stream-text" title="Ninguna radio seleccionada">Ninguna radio
+                        seleccionada</span>
+                </div>
+            </div>
         </div>
 
+        <!-- Derecha: Estado ONLINE -->
+        <div class="gh-nav-right">
+            <div class="gh-status-badge state-stopped" id="stream-badge">
+                <span class="gh-live-dot"></span>
+                <span class="gh-status-label" id="stream-status-text">DETENIDO</span>
+            </div>
+        </div>
     </header>
 
-    <div class="container">
-        <h1>~ HyRadio</h1>
 
-        <!-- Nuevo contenedor flex para alinear a los extremos -->
+    <div class="container">
         <div class="header-lista">
             <p>Selecciona una emisora de la lista:</p>
 
@@ -48,13 +68,30 @@
             <div class="action-buttons">
                 <input type="file" id="import-file" style="display: none;" accept=".json"
                     onchange="importStations(event)">
-                <button class="main-btn" title="Exportar emisoras" onclick="exportStations()">[↑]</button>
-                <button class="main-btn" title="Importar emisoras"
-                    onclick="document.getElementById('import-file').click()">[↓]</button>
+               <button class="io-btn-tooltip" data-tooltip="Guardar respaldo" onclick="exportStations()">[↑]</button>
+                <button class="io-btn-tooltip" data-tooltip="Abrir respaldo" onclick="document.getElementById('import-file').click()">[↓]</button>
             </div>
         </div>
 
         <ul class="station-list" id="station-list"></ul>
+
+        <div class="pomodoro-box" id="pomodoro">
+            <div class="pomo-main">
+                <span class="pomo-mode" id="pomo-mode">FOCUS</span>
+                <span class="pomo-timer" id="pomo-time">20:00</span>
+                <div class="pomo-controls">
+                    <button id="pomo-toggle" title="Iniciar/Pausar">▶</button>
+                    <button id="pomo-reset" title="Reiniciar">↺</button>
+                </div>
+            </div>
+
+            <div class="pomo-presets">
+                <button class="pomo-preset is-active" data-mins="20">[20m]</button>
+                <button class="pomo-preset" data-mins="25">[25m]</button>
+                <button class="pomo-preset" data-mins="30">[30m]</button>
+                <button class="pomo-preset" data-mins="40">[40m]</button>
+            </div>
+        </div>
 
         <div class="console-box">
             <!-- Contenedor flex para alinear título y botón -->
@@ -113,7 +150,7 @@
             <div class="volume-container">
                 <span>VOL</span>
                 <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5">
-                <span class="vol-text" id="volume-text">[ 50% ]</span>
+                <span class="vol-text" id="volume-text">[50%]</span>
             </div>
             <audio id="audio-player"></audio>
             <button id="play-btn" class="main-btn" onclick="playRadio()">[ Play ]</button>
